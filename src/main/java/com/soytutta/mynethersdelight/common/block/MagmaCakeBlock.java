@@ -3,6 +3,7 @@ package com.soytutta.mynethersdelight.common.block;
 
 import com.mojang.datafixers.util.Pair;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -39,7 +40,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.ModList;
 import vectorwing.farmersdelight.common.registry.ModDamageTypes;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
@@ -192,7 +192,7 @@ public class MagmaCakeBlock extends Block {
     protected InteractionResult secondCake(Level level, BlockPos pos, BlockState state, Player player) {
         Direction direction = player.getDirection().getOpposite();
         ItemStack heldStack = player.getMainHandItem();
-        if (ModList.get().isLoaded("amendments")) {
+        if (FabricLoader.getInstance().isModLoaded("amendments")) {
             if (state.getValue(BITES) == 0 && !state.getValue(SECOND_CAKE)) {
                 if (!player.isCreative()) {
                     heldStack.shrink(1);

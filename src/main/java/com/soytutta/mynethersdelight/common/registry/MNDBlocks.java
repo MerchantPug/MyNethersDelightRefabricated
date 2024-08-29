@@ -10,7 +10,9 @@ import com.soytutta.mynethersdelight.common.block.PowderyCannonSaplingBlock;
 import com.soytutta.mynethersdelight.common.block.MNDStandingSignBlock;
 import com.soytutta.mynethersdelight.common.block.MNDWallSignBlock;
 import com.soytutta.mynethersdelight.common.block.utility.MNDWoodTypes;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -21,60 +23,59 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.material.PushReaction;
 import vectorwing.farmersdelight.common.block.*;
 
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 public class MNDBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "mynethersdelight");
+    public static final LazyRegistrar<Block> BLOCKS = LazyRegistrar.create(Registries.BLOCK, "mynethersdelight");
 
-    public static final RegistryObject<Block> NETHER_BRICKS_CABINET;
-    public static final RegistryObject<Block> NETHER_STOVE;
-    public static final RegistryObject<Block> BULLET_PEPPER_CRATE;
-    public static final RegistryObject<Block> LETIOS_COMPOST;
-    public static final RegistryObject<Block> RESURGENT_SOIL;
-    public static final RegistryObject<Block> RESURGENT_SOIL_FARMLAND;
-    public static final RegistryObject<Block> WARPED_FUNGUS_COLONY;
-    public static final RegistryObject<Block> CRIMSON_FUNGUS_COLONY;
-    public static final RegistryObject<Block> STUFFED_HOGLIN;
-    public static final RegistryObject<Block> HOGLIN_TROPHY;
-    public static final RegistryObject<Block> WAXED_HOGLIN_TROPHY;
-    public static final RegistryObject<Block> ZOGLIN_TROPHY;
-    public static final RegistryObject<Block> SKOGLIN_TROPHY;
-    public static final RegistryObject<Block> POWDERY_CHUBBY_SAPLING;
-    public static final RegistryObject<Block> POWDERY_CANNON;
-    public static final RegistryObject<Block> POWDERY_CANE;
-    public static final RegistryObject<Block> BULLET_PEPPER;
-    public static final RegistryObject<Block> POWDERY_TORCH;
-    public static final RegistryObject<Block> WALL_POWDERY_TORCH;
-    public static final RegistryObject<Block> POTTED_POWDERY_CANNON;
-    public static final RegistryObject<Block> POTTED_BULLET_PEPPER;
-    public static final RegistryObject<Block> POWDERY_CABINET;
-    public static final RegistryObject<Block> BLOCK_OF_POWDERY_CANNON;
-    public static final RegistryObject<Block> BLOCK_OF_STRIPPED_POWDERY_CANNON;
-    public static final RegistryObject<Block> POWDERY_PLANKS;
-    public static final RegistryObject<Block> POWDERY_PLANKS_SLAB;
-    public static final RegistryObject<Block> POWDERY_PLANKS_STAIRS;
-    public static final RegistryObject<Block> POWDERY_MOSAIC;
-    public static final RegistryObject<Block> POWDERY_MOSAIC_SLAB;
-    public static final RegistryObject<Block> POWDERY_MOSAIC_STAIRS;
-    public static final RegistryObject<Block> POWDERY_FENCE;
-    public static final RegistryObject<Block> POWDERY_TRAPDOOR;
-    public static final RegistryObject<Block> POWDERY_DOOR;
-    public static final RegistryObject<Block> POWDERY_BUTTON;
-    public static final RegistryObject<Block> POWDERY_PRESSURE_PLATE;
-    public static final RegistryObject<Block> POWDERY_FENCE_GATE;
-    public static final RegistryObject<Block> POWDERY_SIGN;
-    public static final RegistryObject<Block> POWDERY_WALL_SIGN;
-    public static final RegistryObject<Block> POWDERY_HANGING_SIGN;
-    public static final RegistryObject<Block> POWDERY_WALL_HANGING_SIGN;
-    public static final RegistryObject<Block> STRIDERLOAF_BLOCK;
-    public static final RegistryObject<Block> COLD_STRIDERLOAF_BLOCK;
-    public static final RegistryObject<Block> GHASTA_WITH_CREAM_BLOCK;
-    public static final RegistryObject<Block> MAGMA_CAKE;
+    public static final Supplier<Block> NETHER_BRICKS_CABINET;
+    public static final Supplier<Block> NETHER_STOVE;
+    public static final Supplier<Block> BULLET_PEPPER_CRATE;
+    public static final Supplier<Block> LETIOS_COMPOST;
+    public static final Supplier<Block> RESURGENT_SOIL;
+    public static final Supplier<Block> RESURGENT_SOIL_FARMLAND;
+    public static final Supplier<Block> WARPED_FUNGUS_COLONY;
+    public static final Supplier<Block> CRIMSON_FUNGUS_COLONY;
+    public static final Supplier<Block> STUFFED_HOGLIN;
+    public static final Supplier<Block> HOGLIN_TROPHY;
+    public static final Supplier<Block> WAXED_HOGLIN_TROPHY;
+    public static final Supplier<Block> ZOGLIN_TROPHY;
+    public static final Supplier<Block> SKOGLIN_TROPHY;
+    public static final Supplier<Block> POWDERY_CHUBBY_SAPLING;
+    public static final Supplier<Block> POWDERY_CANNON;
+    public static final Supplier<Block> POWDERY_CANE;
+    public static final Supplier<Block> BULLET_PEPPER;
+    public static final Supplier<Block> POWDERY_TORCH;
+    public static final Supplier<Block> WALL_POWDERY_TORCH;
+    public static final Supplier<Block> POTTED_POWDERY_CANNON;
+    public static final Supplier<Block> POTTED_BULLET_PEPPER;
+    public static final Supplier<Block> POWDERY_CABINET;
+    public static final Supplier<Block> BLOCK_OF_POWDERY_CANNON;
+    public static final Supplier<Block> BLOCK_OF_STRIPPED_POWDERY_CANNON;
+    public static final Supplier<Block> POWDERY_PLANKS;
+    public static final Supplier<Block> POWDERY_PLANKS_SLAB;
+    public static final Supplier<Block> POWDERY_PLANKS_STAIRS;
+    public static final Supplier<Block> POWDERY_MOSAIC;
+    public static final Supplier<Block> POWDERY_MOSAIC_SLAB;
+    public static final Supplier<Block> POWDERY_MOSAIC_STAIRS;
+    public static final Supplier<Block> POWDERY_FENCE;
+    public static final Supplier<Block> POWDERY_TRAPDOOR;
+    public static final Supplier<Block> POWDERY_DOOR;
+    public static final Supplier<Block> POWDERY_BUTTON;
+    public static final Supplier<Block> POWDERY_PRESSURE_PLATE;
+    public static final Supplier<Block> POWDERY_FENCE_GATE;
+    public static final Supplier<Block> POWDERY_SIGN;
+    public static final Supplier<Block> POWDERY_WALL_SIGN;
+    public static final Supplier<Block> POWDERY_HANGING_SIGN;
+    public static final Supplier<Block> POWDERY_WALL_HANGING_SIGN;
+    public static final Supplier<Block> STRIDERLOAF_BLOCK;
+    public static final Supplier<Block> COLD_STRIDERLOAF_BLOCK;
+    public static final Supplier<Block> GHASTA_WITH_CREAM_BLOCK;
+    public static final Supplier<Block> MAGMA_CAKE;
 
     public MNDBlocks() {
     }
@@ -171,7 +172,7 @@ public class MNDBlocks {
                         .mapColor(MapColor.TERRACOTTA_GRAY))
         );
         POWDERY_PLANKS_STAIRS = BLOCKS.register("powdery_stairs", () ->
-                new StairBlock(Blocks.BAMBOO_PLANKS::defaultBlockState,
+                new StairBlock(Blocks.BAMBOO_PLANKS.defaultBlockState(),
                         BlockBehaviour.Properties.copy(Blocks.CRIMSON_STAIRS)
                         .sound(SoundType.BAMBOO_WOOD)
                         .mapColor(MapColor.TERRACOTTA_GRAY))
@@ -187,7 +188,7 @@ public class MNDBlocks {
                         .mapColor(MapColor.TERRACOTTA_GRAY))
         );
         POWDERY_MOSAIC_STAIRS = BLOCKS.register("powdery_mosaic_stairs", () ->
-                new StairBlock(Blocks.BAMBOO_PLANKS::defaultBlockState,
+                new StairBlock(Blocks.BAMBOO_PLANKS.defaultBlockState(),
                         BlockBehaviour.Properties.copy(Blocks.CRIMSON_STAIRS)
                         .sound(SoundType.BAMBOO_WOOD)
                         .mapColor(MapColor.TERRACOTTA_GRAY))
@@ -256,7 +257,8 @@ public class MNDBlocks {
         );
         STUFFED_HOGLIN = BLOCKS.register("stuffed_hoglin", () ->
                 new StuffedHoglinBlock(Properties.copy(Blocks.CAKE)
-                        .mapColor(MapColor.TERRACOTTA_PINK))
+                        .mapColor(MapColor.TERRACOTTA_PINK)
+                        .pushReaction(PushReaction.DESTROY))
         );
         HOGLIN_TROPHY = BLOCKS.register("hoglin_trophy", () ->
                 new TrophyBlock(Properties.copy(Blocks.CRIMSON_PLANKS)

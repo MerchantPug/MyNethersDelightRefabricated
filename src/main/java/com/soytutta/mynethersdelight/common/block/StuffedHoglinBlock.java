@@ -5,8 +5,6 @@
 
 package com.soytutta.mynethersdelight.common.block;
 
-import javax.annotation.Nullable;
-
 import com.soytutta.mynethersdelight.common.utility.MNDTextUtils;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import net.minecraft.core.BlockPos;
@@ -41,6 +39,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.TextUtils;
@@ -157,11 +156,13 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
         return level.getBlockState(blockpos1).canBeReplaced(p_49479_) && level.getWorldBorder().isWithinBounds(blockpos1) ? (BlockState)this.defaultBlockState().setValue(FACING, direction) : null;
     }
 
+    // Moved to item init.
+    /*
     @Override
-    @SuppressWarnings("deprecation")
-    public PushReaction getPistonPushReaction(BlockState state) {
+    public PushReaction getPistonPushReaction() {
         return PushReaction.DESTROY;
     }
+     */
 
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
@@ -255,11 +256,6 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return false;
     }
 
     static {

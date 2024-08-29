@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:eggs"
+      "tag": "c:eggs"
     },
     {
       "item": "mynethersdelight:ghasmati"
@@ -12,7 +12,7 @@
       "item": "mynethersdelight:ghasmati"
     },
     {
-      "tag": "forge:eggs"
+      "tag": "c:eggs"
     }
   ],
   "result": {

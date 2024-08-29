@@ -25,8 +25,10 @@ public class PepperCrateBlock extends Block {
         super.stepOn(level, pos, state, entity);
     }
 
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 }

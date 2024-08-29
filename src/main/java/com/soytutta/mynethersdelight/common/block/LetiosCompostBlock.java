@@ -6,6 +6,7 @@ package com.soytutta.mynethersdelight.common.block;
 
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
+import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,9 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.IPlantable;
 
 public class LetiosCompostBlock extends Block {
     public static IntegerProperty FORGOTING = IntegerProperty.create("forgoting", 0, 9);
@@ -86,10 +84,12 @@ public class LetiosCompostBlock extends Block {
         }
     }
 
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 
     @Override
     @SuppressWarnings("deprecation")
@@ -103,13 +103,13 @@ public class LetiosCompostBlock extends Block {
         return this.getMaxForgotingStage() + 1 - blockState.getValue(FORGOTING);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
         if (random.nextInt(10) == 0 && level.dimensionType().ultraWarm()) {
             level.addParticle(ParticleTypes.SOUL, (double)pos.getX() + (double)random.nextFloat(), (double)pos.getY() + 1.1, (double)pos.getZ() + (double)random.nextFloat(), 0.0, 0.0, 0.0);
         }
     }
+
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
             if (plantable instanceof NetherWartBlock && facing == Direction.UP) {
                 return true;

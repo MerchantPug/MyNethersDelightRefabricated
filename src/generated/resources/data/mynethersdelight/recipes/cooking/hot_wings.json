@@ -4,13 +4,13 @@
   "experience": 0.35,
   "ingredients": [
     {
-      "tag": "forge:raw_chicken"
+      "tag": "c:raw_chicken"
     },
     {
       "tag": "mynethersdelight:hot_spice"
     },
     {
-      "tag": "forge:crops/onion"
+      "tag": "c:crops/onion"
     }
   ],
   "recipe_book_tab": "meals",

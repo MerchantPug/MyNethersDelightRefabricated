@@ -3,6 +3,7 @@ package com.soytutta.mynethersdelight.common.block;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,8 +26,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeHooks;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
 
 import java.util.Random;
@@ -110,9 +109,8 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
 
         if (age == 2 && random.nextInt(2) == 0) {
             world.setBlock(pos, state.setValue(LIT, true), 2);
-        } else if (age < 2 && ForgeHooks.onCropsGrowPre(world, pos, state, random.nextInt(3) == 0)) {
+        } else if (age < 2 && random.nextInt(3) == 0) {
             world.setBlock(pos, state.setValue(AGE, age + 1), 2);
-            ForgeHooks.onCropsGrowPost(world, pos, state);
         }
 
         if (!maxHeight) {
@@ -155,7 +153,7 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -200,7 +198,7 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
 
         if ( age == 2 && state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
-            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
                 heldItem.hurtAndBreak(1, player, (action) -> { action.broadcastBreakEvent(hand); });
                 level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
                 level.destroyBlock(pos, true);
@@ -212,13 +210,14 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
         return super.use(state, level, pos, player, hand, context);
     }
 
-    @Override
+    /*
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return new ItemStack(MNDItems.BULLET_PEPPER.get());
     }
 

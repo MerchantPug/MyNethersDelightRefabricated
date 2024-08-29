@@ -5,8 +5,6 @@
 
 package com.soytutta.mynethersdelight.integration.jei;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import com.google.common.collect.ImmutableList;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
@@ -23,13 +21,12 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.integration.jei.FDRecipes;
 
 import java.util.List;
 
-@ParametersAreNonnullByDefault
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation("mynethersdelight", "jei_plugin");
@@ -60,11 +57,11 @@ public class JEIPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(MNDItems.NETHER_STOVE.get()), RecipeTypes.CAMPFIRE_COOKING);
         registration.addRecipeCatalyst(new ItemStack(MNDItems.SOUL_NETHER_STOVE.get()), RecipeTypes.CAMPFIRE_COOKING);
-        registration.addRecipeCatalyst(new ItemStack((ItemLike) MNDBlocks.LETIOS_COMPOST.get()), MNDRecipeTypes.FORGOTING);
+        registration.addRecipeCatalyst(new ItemStack(MNDBlocks.LETIOS_COMPOST.get()), MNDRecipeTypes.FORGOTING);
 
     }
 
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return ID;
     }
 }

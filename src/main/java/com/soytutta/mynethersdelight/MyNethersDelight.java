@@ -3,56 +3,60 @@ package com.soytutta.mynethersdelight;
 import com.mojang.serialization.Codec;
 import com.soytutta.mynethersdelight.common.MNDCommonSetup;
 import com.soytutta.mynethersdelight.common.events.CommonEvent;
+import com.soytutta.mynethersdelight.common.item.HotCreamConeItem;
 import com.soytutta.mynethersdelight.common.loot.MNDPastrySlicingModifier;
 import com.soytutta.mynethersdelight.common.loot.RemplaceLootModifier;
 import com.soytutta.mynethersdelight.common.registry.*;
+import com.soytutta.mynethersdelight.core.data.worldgen.biome.MNDBiomeModifiers;
 import com.soytutta.mynethersdelight.integration.MNDEveryCompat;
-import com.soytutta.mynethersdelight.integration.addonsdelight.MNDItemsMD;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
+import io.github.fabricators_of_create.porting_lib.loot.PortingLibLoot;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.registries.Registries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(MyNethersDelight.MODID)
-public class MyNethersDelight
+import java.util.function.Supplier;
+
+public class MyNethersDelight implements ModInitializer
 {
     public static final String MODID = "mynethersdelight";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public MyNethersDelight() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(MNDCommonSetup::init);
-        MNDItems.ITEMS.register(modEventBus);
-        if (ModList.get().isLoaded("miners_delight")) {
-            MNDItemsMD.ITEMS.register(modEventBus);
+    @Override
+    public void onInitialize() {
+        MNDCommonSetup.init();
+        MNDItems.ITEMS.register();
+        // TODO: I don't think there is a Miner's Delight Fabric.
+        /*
+        if (FabricLoader.getInstance().isModLoaded("miners_delight")) {
+            MNDItemsMD.ITEMS.register();
         }
-        MNDBlocks.BLOCKS.register(modEventBus);
-        MNDEffects.EFFECTS.register(modEventBus);
-        MNDEnchantments.DEF_REG.register(modEventBus);
-        MNDBlockEntityTypes.TILES.register(modEventBus);
-        MNDEntityTypes.ENTITIES.register(modEventBus);
-        MNDCreativeTab.TABS.register(modEventBus);
-        MNDBiomeFeatures.FEATURES.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new CommonEvent());
-        registerLootSerializers(modEventBus);
-        if (ModList.get().isLoaded("moonlight")) {
+         */
+        MNDBlocks.BLOCKS.register();
+        MNDEffects.EFFECTS.register();
+        MNDEnchantments.DEF_REG.register();
+        MNDBlockEntityTypes.TILES.register();
+        MNDEntityTypes.ENTITIES.register();
+        MNDCreativeTab.TABS.register();
+        MNDBiomeFeatures.FEATURES.register();
+        registerLootSerializers();
+        if (FabricLoader.getInstance().isModLoaded("moonlight")) {
             MNDEveryCompat.registerCompat();
         }
+
+        // Refabricated
+        MNDBiomeModifiers.bootstrap();
+        HotCreamConeItem.init();
     }
 
-    void registerLootSerializers(IEventBus bus) {
-        DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MyNethersDelight.MODID);
-        RegistryObject<Codec<RemplaceLootModifier>> REMPLACE_ITEM = LOOT.register("remplace_item", RemplaceLootModifier.CODEC);
-        RegistryObject<Codec<MNDPastrySlicingModifier>> PASTRY_SLICING= LOOT.register("pastry_slicing", MNDPastrySlicingModifier.CODEC);
+    void registerLootSerializers() {
+        LazyRegistrar<Codec<? extends IGlobalLootModifier>> LOOT = LazyRegistrar.create(PortingLibLoot.GLOBAL_LOOT_MODIFIER_SERIALIZERS_KEY, MyNethersDelight.MODID);
+        Supplier<Codec<RemplaceLootModifier>> REMPLACE_ITEM = LOOT.register("remplace_item", RemplaceLootModifier.CODEC);
+        Supplier<Codec<MNDPastrySlicingModifier>> PASTRY_SLICING= LOOT.register("pastry_slicing", MNDPastrySlicingModifier.CODEC);
 
-        LOOT.register(bus);
+        LOOT.register();
     }
 }

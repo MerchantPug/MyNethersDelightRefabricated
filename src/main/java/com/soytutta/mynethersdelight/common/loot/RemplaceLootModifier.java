@@ -3,7 +3,10 @@ package com.soytutta.mynethersdelight.common.loot;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
+import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -11,11 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class RemplaceLootModifier extends LootModifier {
@@ -26,9 +26,9 @@ public class RemplaceLootModifier extends LootModifier {
     public static final Supplier<Codec<RemplaceLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst)
             .and(
                     inst.group(
-                            ForgeRegistries.ITEMS.getCodec().fieldOf("replaces").forGetter((m) -> m.replacedItem),
-                            ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter((m) -> m.newItem),
-                            ForgeRegistries.ENTITY_TYPES.getCodec().fieldOf("entity").forGetter((m) -> m.entity)
+                            BuiltInRegistries.ITEM.byNameCodec().fieldOf("replaces").forGetter((m) -> m.replacedItem),
+                            BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter((m) -> m.newItem),
+                            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter((m) -> m.entity)
                     )
             )
             .apply(inst, RemplaceLootModifier::new)));
@@ -40,7 +40,7 @@ public class RemplaceLootModifier extends LootModifier {
         this.entity = entity;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         Entity t = context.getParamOrNull(LootContextParams.THIS_ENTITY);

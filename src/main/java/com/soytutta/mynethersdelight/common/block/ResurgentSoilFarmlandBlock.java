@@ -28,9 +28,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.tag.ModTags;
@@ -159,10 +156,9 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
 
     private void performBonemealIfPossible(Block block, BlockPos position, BlockState state, ServerLevel level, int distance) {
         if (block instanceof BonemealableBlock growable && MathUtils.RAND.nextFloat() <= Configuration.RICH_SOIL_BOOST_CHANCE.get() / distance) {
-            if (growable.isValidBonemealTarget(level, position, state, false) && ForgeHooks.onCropsGrowPre(level, position, state, true)) {
+            if (growable.isValidBonemealTarget(level, position, state, false)) {
                 growable.performBonemeal(level, level.random, position, state);
                 level.levelEvent(2005, position, 0);
-                ForgeHooks.onCropsGrowPost(level, position, state);
             } else {
                 BlockPos checkPos = position.above();
                 BlockState checkState = level.getBlockState(checkPos);
@@ -287,6 +283,8 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
         }
     }
 
+    // TODO: Handle this.
+    /*
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
         PlantType plantType = plantable.getPlantType(world, pos.relative(facing));
         return plantType == PlantType.CROP
@@ -296,11 +294,7 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
         public BlockState getStateForPlacement(BlockPlaceContext context) {
         return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? MNDBlocks.RESURGENT_SOIL.get().defaultBlockState() : super.getStateForPlacement(context);
         }
+     */
         public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return false;
     }
 }

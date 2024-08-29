@@ -1,11 +1,10 @@
 package com.soytutta.mynethersdelight.common.block;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,20 +29,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.IPlantable;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
 
 import java.util.Random;
 
-public class PowderyCaneBlock extends BushBlock implements IPlantable, BonemealableBlock {
+public class PowderyCaneBlock extends BushBlock implements BonemealableBlock {
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final BooleanProperty BASE = BooleanProperty.create("base");
     public static final BooleanProperty LEAVE = BooleanProperty.create("leave");
@@ -55,6 +51,7 @@ public class PowderyCaneBlock extends BushBlock implements IPlantable, Bonemeala
     public PowderyCaneBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false).setValue(LEAVE, false).setValue(BASE, false).setValue(PRESSURE, 0).setValue(AGE, 0));
+        LandPathNodeTypesRegistry.registerDynamic(this, this::getBlockPathType);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -133,9 +130,8 @@ public class PowderyCaneBlock extends BushBlock implements IPlantable, Bonemeala
         int age = state.getValue(AGE);
         BlockState blockBelow = world.getBlockState(pos.below());
 
-        if (age < 2 && ForgeHooks.onCropsGrowPre(world, pos, state, random.nextInt(3) == 0) && (blockBelow.is(MNDBlocks.RESURGENT_SOIL.get()) || blockBelow.is(MNDBlocks.POWDERY_CANNON.get()))) {
+        if (age < 2 && random.nextInt(3) == 0 && (blockBelow.is(MNDBlocks.RESURGENT_SOIL.get()) || blockBelow.is(MNDBlocks.POWDERY_CANNON.get()))) {
             world.setBlock(pos, state.setValue(AGE, age + 1), 2);
-            ForgeHooks.onCropsGrowPost(world, pos, state);
         }
         else if (world.isEmptyBlock(pos.above())) {
             world.setBlockAndUpdate(pos.above(), MNDBlocks.BULLET_PEPPER.get().defaultBlockState());
@@ -167,7 +163,7 @@ public class PowderyCaneBlock extends BushBlock implements IPlantable, Bonemeala
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -211,7 +207,7 @@ public class PowderyCaneBlock extends BushBlock implements IPlantable, Bonemeala
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
         ItemStack heldItem = player.getItemInHand(hand);
 
-         if (heldItem.is(ForgeTags.TOOLS_KNIVES) || heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+         if (heldItem.is(ForgeTags.TOOLS_KNIVES) || heldItem.is(ConventionalItemTags.SHEARS)) {
              int age = state.getValue(AGE);
              if (state.getValue(LIT)) {
                  if (age > 0) {
@@ -233,24 +229,39 @@ public class PowderyCaneBlock extends BushBlock implements IPlantable, Bonemeala
         return super.use(state, level, pos, player, hand, context);
     }
 
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 
     @Override
-    public boolean isPathfindable(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull PathComputationType path) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
         return false;
     }
 
-    @Override
+    /**
+     * Refabricated: Deprecated but kept for cross-loader code. Use {@link PowderyCaneBlock#getBlockPathType(BlockState, BlockGetter, BlockPos, boolean)} instead.
+     */
+    @Nullable
+    @Deprecated
     public BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
         return BlockPathTypes.DAMAGE_OTHER;
     }
 
-    @Override
+    /**
+     * Refabricated: Deprecated but kept for cross-loader code. Use {@link PowderyCaneBlock#getBlockPathType(BlockState, BlockGetter, BlockPos, boolean)} instead.
+     */
+    @Deprecated
     public BlockPathTypes getAdjacentBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, BlockPathTypes originalType) {
         return BlockPathTypes.DANGER_OTHER;
+    }
+
+    public BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, boolean adjacent) {
+        if (adjacent)
+            return BlockPathTypes.DANGER_OTHER;
+        return BlockPathTypes.DAMAGE_OTHER;
     }
 
     @Override

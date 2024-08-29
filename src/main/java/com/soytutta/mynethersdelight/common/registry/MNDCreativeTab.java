@@ -2,27 +2,26 @@ package com.soytutta.mynethersdelight.common.registry;
 
 import com.soytutta.mynethersdelight.MyNethersDelight;
 import com.soytutta.mynethersdelight.common.utility.MNDTextUtils;
-import com.soytutta.mynethersdelight.integration.addonsdelight.MNDItemsMD;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.registries.*;
 import net.minecraft.world.item.*;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.*;
 
-@Mod.EventBusSubscriber(modid = MyNethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 public class MNDCreativeTab {
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MyNethersDelight.MODID);
+    public static final LazyRegistrar<CreativeModeTab> TABS = LazyRegistrar.create(Registries.CREATIVE_MODE_TAB, MyNethersDelight.MODID);
 
-    public static final RegistryObject<CreativeModeTab> MY_NETHERS_DELIGHT_TAB = TABS.register("main",
-            () -> CreativeModeTab.builder()
+    public static final Supplier<CreativeModeTab> MY_NETHERS_DELIGHT_TAB = TABS.register("main",
+            () -> FabricItemGroup.builder()
                     .title(MNDTextUtils.getTranslation("itemGroup.main"))
                     .icon(MNDItems.NETHER_STOVE.get()::getDefaultInstance)
+                    .displayItems((itemDisplayParameters, output) -> MNDMainTabContents(output::accept))
                     .build()
     );
-    private static void MNDMainTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() != MY_NETHERS_DELIGHT_TAB.get()) return;
+    private static void MNDMainTabContents(Consumer<Item> event) {
+        // if (event.getTab() != MY_NETHERS_DELIGHT_TAB.get()) return;
 
         event.accept(MNDItems.NETHER_BRICKS_CABINET.get());
         event.accept(MNDItems.NETHER_STOVE.get());
@@ -119,15 +118,18 @@ public class MNDCreativeTab {
         event.accept(MNDItems.HOT_CREAM.get());
         event.accept(MNDItems.HOT_CREAM_CONE.get());
 
-        if (ModList.get().isLoaded("miners_delight")) {
+        // TODO: Reimplement if MD gets a port.
+        /*
+        if (FabricLoader.getInstance().isModLoaded("miners_delight")) {
             event.accept(MNDItemsMD.SPICY_HOGLIN_STEW_CUP.get());
             event.accept(MNDItemsMD.STRIDER_STEW_CUP.get());
             event.accept(MNDItemsMD.SPICY_NOODLE_SOUP_CUP.get());
             event.accept(MNDItemsMD.ROCK_SOUP_CUP.get());
         }
+         */
     }
-    @SubscribeEvent
-    public static void buildContents(BuildCreativeModeTabContentsEvent event) {
-        MNDMainTabContents(event);
+
+    public static void buildContents(Consumer<Item> consumer) {
+        MNDMainTabContents(consumer);
     }
 }

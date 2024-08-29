@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "My Nether's Delight",
+  "description": "A nether expansion for the Farmer's Delight mod!",
+  "authors": [
+    "SoyTutta",
+    "MerchantPug"
+  ],
+  "contributors": [
+    "MerchantPug",
+    "Mpustovoi",
+    "Unroman",
+    "ChuijkYahus",
+    "SlimeSB",
+    "RaymondBlaze",
+    "TCGhost",
+    "Sarinsa",
+    "Umpaz",
+    "SoyTutta"
+  ],
+  "contact": {
+    "homepage": "https://github.com/MerchantPug/MyNethersDelightRefabricated",
+    "sources": "https://github.com/MerchantPug/MyNethersDelightRefabricated"
+  },
+  "license": "ARR",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.soytutta.mynethersdelight.MyNethersDelight"
+    ],
+    "client": [
+      "com.soytutta.mynethersdelight.client.MyNethersDelightClient"
+    ],
+    "mm:early_risers": [
+      "com.soytutta.mynethersdelight.MyNethersDelightASM"
+    ],
+    "jei_mod_plugin": [
+      "com.soytutta.mynethersdelight.integration.jei.JEIPlugin"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json"
+  ],
+  "accessWidener": "${mod_id}.accesswidener",
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.20 <=1.20.1"
+  }
+}

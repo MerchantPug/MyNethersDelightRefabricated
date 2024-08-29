@@ -9,8 +9,6 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.soytutta.mynethersdelight.common.utility.MNDTextUtils;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
@@ -29,15 +27,15 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import vectorwing.farmersdelight.FarmersDelight;
 
 // thanks Umpaz for letting me use this code <3
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ForgotingRecipeCategory implements IRecipeCategory<ForgotingDummy> {
     public static final ResourceLocation UID = new ResourceLocation(FarmersDelight.MODID, "composition");
@@ -76,8 +74,8 @@ public class ForgotingRecipeCategory implements IRecipeCategory<ForgotingDummy> 
     }
 
     public void setRecipe(IRecipeLayoutBuilder builder, ForgotingDummy recipe, IFocusGroup focusGroup) {
-        List<ItemStack> accelerators = ForgeRegistries.BLOCKS.tags().getTag(MNDTags.SHOWCASE_ACTIVATORS).stream().map(ItemStack::new).collect(Collectors.toList());
-        List<ItemStack> flames = ForgeRegistries.BLOCKS.tags().getTag(MNDTags.SHOWCASE_FLAMES).stream().map(ItemStack::new).collect(Collectors.toList());
+        List<ItemStack> accelerators = BuiltInRegistries.BLOCK.getTag(MNDTags.SHOWCASE_ACTIVATORS).stream().flatMap(holders -> holders.stream().map(h -> new ItemStack(h.value()))).collect(Collectors.toList());
+        List<ItemStack> flames = BuiltInRegistries.BLOCK.getTag(MNDTags.SHOWCASE_FLAMES).stream().flatMap(holders -> holders.stream().map(h -> new ItemStack(h.value()))).collect(Collectors.toList());
         builder.addSlot(RecipeIngredientRole.INPUT, 9, 26).addItemStack(this.letiosCompost);
         builder.addSlot(RecipeIngredientRole.OUTPUT, 93, 26).addItemStack(this.resurgentSoil);
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 64, 54).addItemStacks(accelerators);
@@ -110,7 +108,7 @@ public class ForgotingRecipeCategory implements IRecipeCategory<ForgotingDummy> 
         return (double)iconX <= mouseX && mouseX < (double)(iconX + 16) && (double)iconY <= mouseY && mouseY < (double)(iconY + 19);
     }
 
-    private static MutableComponent translateKey(@Nonnull String suffix) {
+    private static MutableComponent translateKey(@NotNull String suffix) {
         return Component.translatable("mynethersdelight.jei.forgoting" + suffix);
     }
 }

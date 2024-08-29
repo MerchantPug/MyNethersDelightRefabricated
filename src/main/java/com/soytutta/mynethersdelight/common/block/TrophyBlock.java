@@ -4,8 +4,6 @@
 //
 package com.soytutta.mynethersdelight.common.block;
 
-import javax.annotation.Nullable;
-
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import net.minecraft.core.BlockPos;
@@ -38,12 +36,10 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 
@@ -266,7 +262,7 @@ public class TrophyBlock extends Block implements SimpleWaterloggedBlock {
         return null;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
         if (!level.dimensionType().ultraWarm() && state.getBlock() == MNDBlocks.HOGLIN_TROPHY.get()) {
@@ -278,10 +274,12 @@ public class TrophyBlock extends Block implements SimpleWaterloggedBlock {
         }
     }
 
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 
     @Override
     @SuppressWarnings("deprecation")

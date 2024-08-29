@@ -6,11 +6,12 @@ package com.soytutta.mynethersdelight.common.block;
 
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -18,14 +19,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.*;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +34,10 @@ import static net.minecraft.world.level.block.PinkPetalsBlock.FACING;
 public class ResurgentSoilBlock extends Block {
     public ResurgentSoilBlock(BlockBehaviour.Properties properties) {
         super(properties);
+    }
+
+    public static void init() {
+        TillableBlockRegistry.register(MNDBlocks.RESURGENT_SOIL.get(), HoeItem::onlyIfAirAbove, HoeItem.changeIntoState(MNDBlocks.RESURGENT_SOIL_FARMLAND.get().defaultBlockState()));
     }
 
     @Override
@@ -177,10 +180,9 @@ public class ResurgentSoilBlock extends Block {
 
     private void performBonemealIfPossible(Block block, BlockPos position, BlockState state, ServerLevel level, int distance) {
         if (block instanceof BonemealableBlock growable && MathUtils.RAND.nextFloat() <= Configuration.RICH_SOIL_BOOST_CHANCE.get() / distance) {
-            if (growable.isValidBonemealTarget(level, position, state, false) && ForgeHooks.onCropsGrowPre(level, position, state, true)) {
+            if (growable.isValidBonemealTarget(level, position, state, false)) {
                 growable.performBonemeal(level, level.random, position, state);
                 level.levelEvent(2005, position, 0);
-                ForgeHooks.onCropsGrowPost(level, position, state);
             } else {
                 BlockPos checkPos = position.above();
                 BlockState checkState = level.getBlockState(checkPos);
@@ -332,14 +334,19 @@ public class ResurgentSoilBlock extends Block {
         }
     }
 
-    @Nullable
+    /*
     public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
         return toolAction.equals(ToolActions.HOE_TILL) && context.getLevel().getBlockState(context.getClickedPos().above()).isAir() ? MNDBlocks.RESURGENT_SOIL_FARMLAND.get().defaultBlockState() : null;
     }
+     */
 
+    // Refabricated: Implemented through mixin.
+    // TODO: Implement through mixin.
+    /*
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
         PlantType plantType = plantable.getPlantType(world, pos.relative(facing));
         return plantType != PlantType.CROP;
     }
+     */
 }

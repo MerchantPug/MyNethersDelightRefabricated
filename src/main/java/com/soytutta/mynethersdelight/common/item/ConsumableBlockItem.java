@@ -1,7 +1,6 @@
 package com.soytutta.mynethersdelight.common.item;
 
 import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
@@ -47,7 +47,7 @@ public class ConsumableBlockItem extends BlockItem {
             this.affectConsumer(stack, level, consumer);
         }
 
-        ItemStack containerStack = stack.getCraftingRemainingItem();
+        ItemStack containerStack = stack.getRecipeRemainder();
         Player player;
         if (stack.isEdible()) {
             super.finishUsingItem(stack, level, consumer);

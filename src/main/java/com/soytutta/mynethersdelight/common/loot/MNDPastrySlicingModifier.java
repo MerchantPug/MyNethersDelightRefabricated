@@ -4,15 +4,15 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.soytutta.mynethersdelight.common.block.MagmaCakeBlock;
+import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
 import vectorwing.farmersdelight.common.loot.modifier.PastrySlicingModifier;
 
 import java.util.function.Supplier;
@@ -21,7 +21,7 @@ public class MNDPastrySlicingModifier extends PastrySlicingModifier {
     public static final Supplier<Codec<MNDPastrySlicingModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.create(inst ->
                     codecStart(inst)
-                            .and(ForgeRegistries.ITEMS.getCodec().fieldOf("slice").forGetter(m -> m.pastrySlice))
+                            .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("slice").forGetter(m -> m.pastrySlice))
                             .apply(inst, MNDPastrySlicingModifier::new)));
 
     private final Item pastrySlice;

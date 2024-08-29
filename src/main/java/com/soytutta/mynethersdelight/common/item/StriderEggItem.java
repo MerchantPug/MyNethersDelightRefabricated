@@ -18,8 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
 import vectorwing.farmersdelight.common.item.DrinkableItem;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
@@ -42,16 +40,14 @@ public class StriderEggItem extends DrinkableItem {
 
         if (!harmfulEffects.isEmpty()) {
             MobEffectInstance selectedEffect = harmfulEffects.get(level.random.nextInt(harmfulEffects.size()));
-            if (!MinecraftForge.EVENT_BUS.post(new MobEffectEvent.Remove(consumer, selectedEffect))) {
-                MobEffect effect = selectedEffect.getEffect();
-                consumer.removeEffect(effect);
+            MobEffect effect = selectedEffect.getEffect();
+            consumer.removeEffect(effect);
 
-                int remainingDuration = selectedEffect.getDuration();
-                int nourishDuration = remainingDuration / 10;
-                if (nourishDuration > 0) {
-                    MobEffectInstance regenerationEffect = new MobEffectInstance(ModEffects.NOURISHMENT.get(), nourishDuration * 3, 0);
-                    consumer.addEffect(regenerationEffect);
-                }
+            int remainingDuration = selectedEffect.getDuration();
+            int nourishDuration = remainingDuration / 10;
+            if (nourishDuration > 0) {
+                MobEffectInstance regenerationEffect = new MobEffectInstance(ModEffects.NOURISHMENT.get(), nourishDuration * 3, 0);
+                consumer.addEffect(regenerationEffect);
             }
         }
     }

@@ -7,13 +7,13 @@
       "item": "mynethersdelight:ghasta"
     },
     {
-      "tag": "forge:cooked_eggs"
+      "tag": "c:cooked_eggs"
     },
     {
       "tag": "mynethersdelight:hot_spice"
     },
     {
-      "tag": "forge:raw_pork"
+      "tag": "c:raw_pork"
     }
   ],
   "recipe_book_tab": "meals",

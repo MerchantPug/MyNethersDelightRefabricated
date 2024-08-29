@@ -10,10 +10,10 @@
       "item": "minecraft:wheat"
     },
     {
-      "tag": "forge:milk"
+      "tag": "c:milk"
     },
     {
-      "tag": "forge:eggs"
+      "tag": "c:eggs"
     },
     {
       "tag": "mynethersdelight:bullet_pepper"

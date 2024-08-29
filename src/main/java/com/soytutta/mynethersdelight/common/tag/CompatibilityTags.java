@@ -1,5 +1,6 @@
 package com.soytutta.mynethersdelight.common.tag;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -13,6 +14,6 @@ public class CompatibilityTags {
     }
 
     private static TagKey<Item> externalItemTag(String modId, String path) {
-        return ItemTags.create(new ResourceLocation(modId, path));
+        return TagKey.create(Registries.ITEM, new ResourceLocation(modId, path));
     }
 }

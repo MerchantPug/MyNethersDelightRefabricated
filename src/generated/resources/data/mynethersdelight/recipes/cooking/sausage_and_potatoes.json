@@ -4,7 +4,7 @@
   "experience": 0.35,
   "ingredients": [
     {
-      "tag": "forge:vegetables/potato"
+      "tag": "c:vegetables/potato"
     },
     {
       "item": "mynethersdelight:hoglin_sausage"

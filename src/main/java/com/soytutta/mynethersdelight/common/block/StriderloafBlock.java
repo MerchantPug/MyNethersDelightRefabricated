@@ -93,7 +93,7 @@ public class StriderloafBlock extends FeastBlock {
         return true;
     }
 
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return new ItemStack(MNDItems.STRIDERLOAF_BLOCK.get());
     }
 

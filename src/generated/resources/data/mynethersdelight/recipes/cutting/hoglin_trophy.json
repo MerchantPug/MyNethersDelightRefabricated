@@ -11,6 +11,6 @@
     }
   ],
   "tool": {
-    "tag": "forge:tools/axes"
+    "tag": "c:tools/axes"
   }
 }

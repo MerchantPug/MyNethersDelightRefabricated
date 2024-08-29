@@ -15,6 +15,6 @@
     }
   ],
   "tool": {
-    "tag": "forge:tools/pickaxes"
+    "tag": "c:tools/pickaxes"
   }
 }

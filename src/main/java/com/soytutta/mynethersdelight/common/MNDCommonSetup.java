@@ -9,17 +9,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public class MNDCommonSetup {
     public MNDCommonSetup() {
     }
 
-    public static void init(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            registerDispenserBehaviors();
-            registerCompostables();
-        });
+    public static void init() {
+        registerDispenserBehaviors();
+        registerCompostables();
     }
     public static void registerDispenserBehaviors() {
         DispenserBlock.registerBehavior(MNDItems.STRIDER_ROCK.get(), new AbstractProjectileDispenseBehavior() {

@@ -3,6 +3,7 @@ package com.soytutta.mynethersdelight.common.block;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,12 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
-
-import javax.annotation.Nullable;
 
 public class PowderyCannonBlock extends BambooStalkBlock {
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
@@ -78,7 +76,7 @@ public class PowderyCannonBlock extends BambooStalkBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return new ItemStack(MNDItems.POWDER_CANNON.get());
     }
 
@@ -148,9 +146,8 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         }
         if (state.getValue(STAGE) == 0 && world.isEmptyBlock(pos.above()) && world.getRawBrightness(pos.above(), 0) >= 9) {
             int height = this.getHeightBelowUpToMax(world, pos) + 1;
-            if (height < 8 && ForgeHooks.onCropsGrowPre(world, pos, state, random.nextInt(3) == 0)) {
+            if (height < 8 && random.nextInt(3) == 0) {
                 this.growBamboo(state, world, pos, random, height);
-                ForgeHooks.onCropsGrowPost(world, pos, state);
             }
         }
         else if (world.getBlockState(posAbove).is(MNDTags.POWDERY_CANE)) {
@@ -184,7 +181,7 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 explodeAndDestroy(level, pos, state);
             }
         }
@@ -242,7 +239,7 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
 
-            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(net.minecraftforge.common.Tags.Items.SHEARS)) {
+            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
                 heldItem.hurtAndBreak(1, player, (action) -> { action.broadcastBreakEvent(hand); });
                 int j = 3 + level.random.nextInt(6);
                 popResource(level, pos, new ItemStack(MNDItems.BULLET_PEPPER.get(), j));
@@ -274,8 +271,10 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         return i;
     }
 
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 }

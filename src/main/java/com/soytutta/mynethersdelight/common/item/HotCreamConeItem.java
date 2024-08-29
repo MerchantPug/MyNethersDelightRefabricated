@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.google.common.collect.Lists;
-import javax.annotation.Nullable;
 
 import com.soytutta.mynethersdelight.common.registry.MNDEffects;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,10 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 import vectorwing.farmersdelight.common.registry.ModParticleTypes;
@@ -39,11 +37,14 @@ import vectorwing.farmersdelight.common.utility.MathUtils;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
 
-@EventBusSubscriber(modid = "mynethersdelight", bus = Bus.FORGE)
 public class HotCreamConeItem extends ConsumableItem {
 
     public HotCreamConeItem(Properties properties) {
         super(properties, false, true);
+    }
+
+    public static void init() {
+        UseEntityCallback.EVENT.register(HotCreamConeItem.StriderFeedEvent::onStriderFeedApplied);
     }
 
     public SoundEvent getEatingSound() {
@@ -146,23 +147,14 @@ public class HotCreamConeItem extends ConsumableItem {
                 new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 6000, 1)});
     }
 
-    @EventBusSubscriber(modid = "mynethersdelight", bus = Bus.FORGE)
     public static class StriderFeedEvent {
-        public StriderFeedEvent() {
-        }
-
-        @SubscribeEvent
-        public static void onStriderFeedApplied(PlayerInteractEvent.EntityInteract event) {
-            Player player = event.getEntity();
-            Entity target = event.getTarget();
-            ItemStack heldStack = event.getItemStack();
+        public static InteractionResult onStriderFeedApplied(Player player, Level world, InteractionHand hand, Entity target, @Nullable EntityHitResult hitResult) {
+            ItemStack heldStack = player.getItemInHand(hand);
             if (target instanceof LivingEntity entity) {
                 if (entity instanceof Strider) {
                     if (entity.isAlive() && heldStack.getItem().equals(MNDItems.HOT_CREAM_CONE.get())) {
                         entity.setHealth(entity.getMaxHealth());
-                        Iterator var6 = HotCreamConeItem.EFFECTS.iterator();
-                        while (var6.hasNext()) {
-                            MobEffectInstance effect = (MobEffectInstance) var6.next();
+                        for (MobEffectInstance effect : HotCreamConeItem.EFFECTS) {
                             entity.addEffect(new MobEffectInstance(effect));
                         }
 
@@ -182,11 +174,11 @@ public class HotCreamConeItem extends ConsumableItem {
                             heldStack.shrink(1);
                         }
 
-                        event.setCancellationResult(InteractionResult.SUCCESS);
-                        event.setCanceled(true);
+                        return InteractionResult.SUCCESS;
                     }
                 }
             }
+            return InteractionResult.PASS;
         }
     }
 }

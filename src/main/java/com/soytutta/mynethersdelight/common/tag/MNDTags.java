@@ -52,10 +52,10 @@ public class MNDTags {
     public MNDTags() {}
 
     private static TagKey<Item> modItemTag(String path) {
-        return ItemTags.create(new ResourceLocation("mynethersdelight:" + path));
+        return TagKey.create(Registries.ITEM, new ResourceLocation("mynethersdelight:" + path));
     }
     private static TagKey<Block> modBlockTag(String path) {
-        return BlockTags.create(new ResourceLocation("mynethersdelight:" + path));
+        return TagKey.create(Registries.BLOCK, new ResourceLocation("mynethersdelight:" + path));
     }
     private static TagKey<EntityType<?>> modEntityTag(String path) {
         return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("farmersdelight", path));

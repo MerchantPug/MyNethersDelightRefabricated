@@ -43,7 +43,7 @@ public class PowderyCannonSaplingBlock extends BambooSaplingBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         return new ItemStack(MNDItems.POWDER_CANNON.get());
     }
 
@@ -51,9 +51,11 @@ public class PowderyCannonSaplingBlock extends BambooSaplingBlock {
     protected void growBamboo(Level level, BlockPos pos) {
         level.setBlock(pos.above(), MNDBlocks.POWDERY_CANNON.get().defaultBlockState().setValue(BambooStalkBlock.LEAVES, BambooLeaves.SMALL), 3);
     }
-
+    
+    /*
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
+     */
 }

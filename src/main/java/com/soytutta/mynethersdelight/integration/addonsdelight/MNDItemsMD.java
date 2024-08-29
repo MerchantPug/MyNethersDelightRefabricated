@@ -1,7 +1,12 @@
 package com.soytutta.mynethersdelight.integration.addonsdelight;
 
+// TODO: Reintroduce if Miner's Delight gets a Fabric port.
+/*
 import com.sammy.minersdelight.setup.MDItems;
 import com.soytutta.mynethersdelight.common.utility.MNDFoodValues;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 
 public class MNDItemsMD {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "miners_delight");
+    public static final LazyRegistrar<Item> ITEMS = LazyRegistrar.create(Registries.ITEM, "miners_delight");
 
     public static final RegistryObject<Item> STRIDER_STEW_CUP;
     public static final RegistryObject<Item> SPICY_NOODLE_SOUP_CUP;
@@ -39,3 +44,4 @@ public class MNDItemsMD {
         );
     }
 }
+ */

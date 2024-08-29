@@ -10,7 +10,7 @@
       "item": "minecraft:soul_campfire"
     },
     "i": {
-      "tag": "forge:ingots/nether_brick"
+      "tag": "c:ingots/nether_brick"
     }
   },
   "pattern": [

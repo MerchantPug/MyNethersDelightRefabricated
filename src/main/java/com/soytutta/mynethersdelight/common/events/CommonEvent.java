@@ -2,11 +2,15 @@ package com.soytutta.mynethersdelight.common.events;
 
 import com.soytutta.mynethersdelight.common.registry.MNDEnchantments;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import io.github.fabricators_of_create.porting_lib.entity.events.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -18,6 +22,7 @@ import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.ZombieHorse;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.hoglin.HoglinBase;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
@@ -27,28 +32,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vectorwing.farmersdelight.common.registry.ModItems;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class CommonEvent {
 
-    @SubscribeEvent
-    public void livingDie(LivingDeathEvent event){
-        if (!event.getEntity().level().isClientSide
-                && event.getEntity() instanceof Mob mob && event.getSource() != null
-                && event.getSource().getDirectEntity() instanceof LivingEntity directSource
-                && directSource.getItemInHand(InteractionHand.MAIN_HAND).is(ForgeTags.TOOLS)) {
-            if (directSource.getItemInHand(InteractionHand.MAIN_HAND).getEnchantmentLevel(MNDEnchantments.HUNTING.get()) > 0
-                    && (mob.getMaxHealth() < 150.0F || mob.getType().is(MNDTags.SPECIAL_HUNT))
-                    && (((directSource.hasEffect(MobEffects.LUCK) || directSource.hasEffect(MobEffects.UNLUCK)) && event.getEntity().level().random.nextFloat() < 0.6F)
-                    || (event.getEntity().level().random.nextFloat() < 0.4F))) {
+    public static void init() {
+        ServerLivingEntityEvents.ALLOW_DEATH.register(CommonEvent::livingDie);
+        LivingEntityEvents.DROPS.register(CommonEvent::onMobDrop);
+    }
 
-                Difficulty difficulty = event.getEntity().level().getDifficulty();
+    public static boolean livingDie(LivingEntity entity, DamageSource source, float amount){
+        if (!entity.level().isClientSide
+                && entity instanceof Mob mob && source != null
+                && source.getDirectEntity() instanceof LivingEntity directSource
+                && directSource.getItemInHand(InteractionHand.MAIN_HAND).is(Tags.Items.TOOLS)) {
+            if (EnchantmentHelper.getEnchantments(directSource.getItemInHand(InteractionHand.MAIN_HAND)).get(MNDEnchantments.HUNTING.get()) > 0
+                    && (mob.getMaxHealth() < 150.0F || mob.getType().is(MNDTags.SPECIAL_HUNT))
+                    && (((directSource.hasEffect(MobEffects.LUCK) || directSource.hasEffect(MobEffects.UNLUCK)) && entity.level().random.nextFloat() < 0.6F)
+                    || (entity.level().random.nextFloat() < 0.4F))) {
+
+                Difficulty difficulty = entity.level().getDifficulty();
                 float baseFailProbability = switch (difficulty) {
                     default -> 0.1F;
                     case PEACEFUL -> 0.0F;
@@ -74,19 +81,19 @@ public class CommonEvent {
                                 mob.level().addFreshEntity(mobCopy);
                             }
                         }
-                        return;
+                        return true;
                     }
                 }
 
                 // FAILED HUNT
-                if ((event.getEntity().level().random.nextFloat() < FailProbability
-                        || (mob.isBaby() && event.getEntity().level().random.nextFloat() < 0.2F))
+                if ((entity.level().random.nextFloat() < FailProbability
+                        || (mob.isBaby() && entity.level().random.nextFloat() < 0.2F))
                         && !mob.hasEffect(MobEffects.CONFUSION)) {
                     mob.setInvisible(true);
 
                     if (mob instanceof Horse horse
-                            && (event.getEntity().level().random.nextFloat() < (FailProbability / 2)
-                            || (horse.isTamed() && event.getEntity().level().random.nextFloat() < FailProbability))){
+                            && (entity.level().random.nextFloat() < (FailProbability / 2)
+                            || (horse.isTamed() && entity.level().random.nextFloat() < FailProbability))){
                         ZombieHorse zombieHorse = EntityType.ZOMBIE_HORSE.create(mob.level());
                         if (zombieHorse != null) {
                             zombieHorse.setTamed(true);
@@ -112,13 +119,13 @@ public class CommonEvent {
                             mob.level().addFreshEntity(zombieHorse);
 
                             zombieHorse.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));                        }
-                        return;
+                        return true;
                     }
 
                     mob.addTag("prevent_drops");
 
                     if (mob instanceof Spider
-                            && event.getEntity().level().random.nextFloat() < FailProbability) {
+                            && entity.level().random.nextFloat() < FailProbability) {
                         CaveSpider caveSpider = EntityType.CAVE_SPIDER.create(mob.level());
                         if (caveSpider != null) {
                             mob.level().playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -127,12 +134,12 @@ public class CommonEvent {
 
                             caveSpider.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                         }
-                        return;
+                        return true;
                     }
 
                     if ((mob instanceof Frog || mob instanceof Bat)
-                            && event.getEntity().level().random.nextFloat() < (FailProbability / 3)
-                            || (mob.level().getBiome(mob.blockPosition()).is(Biomes.SWAMP) && event.getEntity().level().random.nextFloat() < 0.2F)) {
+                            && entity.level().random.nextFloat() < (FailProbability / 3)
+                            || (mob.level().getBiome(mob.blockPosition()).is(Biomes.SWAMP) && entity.level().random.nextFloat() < 0.2F)) {
                         Witch witch = EntityType.WITCH.create(mob.level());
                         if (witch != null) {
                             mob.level().playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -141,7 +148,7 @@ public class CommonEvent {
 
                             witch.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                         }
-                        return;
+                        return true;
                     }
 
                     if (mob instanceof Allay) {
@@ -153,7 +160,7 @@ public class CommonEvent {
 
                             vex.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                         }
-                        return;
+                        return true;
                     }
 
                     if (mob instanceof Villager villager) {
@@ -169,7 +176,7 @@ public class CommonEvent {
                             zombieVillager.setVillagerData(villager.getVillagerData());
                             zombieVillager.moveTo(mob.getX(), mob.getY(), mob.getZ(), mob.getYRot(), mob.getXRot());
                             mob.level().addFreshEntity(zombieVillager);
-                            return;
+                            return true;
                         }
                     }
 
@@ -190,7 +197,7 @@ public class CommonEvent {
                             zombifiedPiglin.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                             zombifiedPiglin.moveTo(mob.getX(), mob.getY(), mob.getZ(), mob.getYRot(), mob.getXRot());
                             mob.level().addFreshEntity(zombifiedPiglin);
-                            return;
+                            return true;
                         }
                     }
 
@@ -205,14 +212,14 @@ public class CommonEvent {
                             zoglin.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                             zoglin.moveTo(mob.getX(), mob.getY(), mob.getZ(), mob.getYRot(), mob.getXRot());
                             mob.level().addFreshEntity(zoglin);
-                            return;
+                            return true;
                         }
                     }
 
                     List<Mob> nearbyMobs = mob.level().getEntitiesOfClass(Mob.class, mob.getBoundingBox().inflate(15));
                     for (Mob nearbyMob : nearbyMobs) {
                         if (nearbyMob.getType() == mob.getType()) {
-                            mob.level().playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                            mob.level().playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                             mob.setInvisible(false);
 
                             if (mob instanceof NeutralMob || mob instanceof Enemy) {
@@ -264,12 +271,10 @@ public class CommonEvent {
                 }
             }
         }
+        return true;
     }
 
-    @SubscribeEvent
-    public void onMobDrop(LivingDropsEvent event) {
-        if (event.getEntity() instanceof Mob mob && mob.getTags().contains("prevent_drops")) {
-            event.getDrops().clear();
-        }
+    public static boolean onMobDrop(LivingEntity target, DamageSource source, Collection<ItemEntity> drops, int lootingLevel, boolean recentlyHit) {
+        return !(target instanceof Mob mob) || !mob.getTags().contains("prevent_drops");
     }
 }

@@ -16,7 +16,7 @@ public abstract class FrogEntityMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(EntityType<? extends Frog> entityType, Level level, CallbackInfo ci) {
         Frog frog = (Frog) (Object) this;
-        GoalSelector goalSelector = frog.goalSelector;
+        GoalSelector goalSelector = ((MobAccessor)frog).mynethersdelightrefabricated$getGoalSelector();
         goalSelector.addGoal(1, new EatMagmaCakeGoal(frog));
     }
 }
