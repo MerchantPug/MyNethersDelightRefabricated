@@ -4,9 +4,17 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "mynethersdelight.refmap.json",
   "mixins": [
+    "BushBlockMixin",
+    "CactusBlockMixin",
+    "CropBlockMixin",
     "FireworkRocketRecipeMixin",
     "FrogEntityMixin",
     "MobAccessor",
+    "MushroomBlockMixin",
+    "MushroomColonyBlockMixin",
+    "PitcherCropBlockMixin",
+    "StemBlockMixin",
+    "SugarCaneBlockMixin",
     "amendments.InteractEventsMixin"
   ],
   "client": [

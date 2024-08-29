@@ -49,6 +49,10 @@ public class MNDTags {
     public static final TagKey<Block> POWDERY_CANE = modBlockTag("powdery_cane");
     public static final TagKey<EntityType<?>> SPECIAL_HUNT = modEntityTag("special_hunt");
 
+    // Refabricated Tags
+    public static final TagKey<Block> DOES_NOT_SURVIVE_RESURGENT_SOIL = modBlockTag("does_not_survive/resurgent_soil");
+    public static final TagKey<Block> SURVIVES_RESURGENT_SOIL_FARMLAND = modBlockTag("survives/resurgent_soil_farmland");
+
     public MNDTags() {}
 
     private static TagKey<Item> modItemTag(String path) {

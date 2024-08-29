@@ -6,18 +6,14 @@ package com.soytutta.mynethersdelight.common.block;
 
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
-import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -110,10 +106,12 @@ public class LetiosCompostBlock extends Block {
         }
     }
 
+    /*
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
             if (plantable instanceof NetherWartBlock && facing == Direction.UP) {
                 return true;
             }
             return super.canSustainPlant(state, world, pos, facing, plantable);
         }
+     */
     }

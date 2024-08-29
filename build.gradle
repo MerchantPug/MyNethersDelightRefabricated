@@ -7,7 +7,15 @@ version = "${mc_version}-${mod_version}.refabricated"
 group = mod_group
 
 base {
-    archivesName = "FarmersDelight"
+    archivesName = "MyNethersDelight"
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/mynethersdelight.accesswidener")
+
+    mixin {
+        defaultRefmapName = "mynethersdelight.refmap.json"
+    }
 }
 
 sourceSets.main.resources {
@@ -15,10 +23,6 @@ sourceSets.main.resources {
 }
 
 repositories {
-
-    flatDir {
-        dirs 'mods'
-    }
 
     mavenLocal()
 
@@ -60,10 +64,6 @@ repositories {
     mavenCentral() // Mixin Extras
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/mynethersdelight.accesswidener")
-}
-
 dependencies {
     minecraft "com.mojang:minecraft:${mc_version}"
 
@@ -78,7 +78,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    include(modImplementation("com.github.Chocohead:Fabric-ASM:${fabricasm_version}")) {
+    modImplementation("com.github.Chocohead:Fabric-ASM:${fabricasm_version}") {
         exclude (group: "net.fabricmc.fabric-api")
     }
 
