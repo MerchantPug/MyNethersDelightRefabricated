@@ -6,6 +6,7 @@ import com.soytutta.mynethersdelight.common.block.LetiosCompostBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilFarmlandBlock;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import com.soytutta.mynethersdelight.common.utility.MNDSoilUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -24,14 +25,14 @@ import org.spongepowered.asm.mixin.injection.At;
 public class MushroomBlockMixin {
     @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/MushroomBlock;mayPlaceOn(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"))
     private boolean mynethersdelightrefabricated$allowPlantsOnMushroom(boolean original, BlockState state, LevelReader level, BlockPos pos) {
-        if (!(state.getBlock() == (Object)this))
+        if (state.getBlock() != (Object)this)
             return original;
 
         if (level.getBlockState(pos.below()).getBlock() instanceof ResurgentSoilBlock)
-            return !((Block)(Object)this).builtInRegistryHolder().is(MNDTags.DOES_NOT_SURVIVE_RESURGENT_SOIL);
+            return MNDSoilUtils.isAbleToPlaceResurgentSoil((Block)(Object)this);
 
         if (level.getBlockState(pos.below()).getBlock() instanceof ResurgentSoilFarmlandBlock)
-            return ((Block)(Object)this).builtInRegistryHolder().is(MNDTags.SURVIVES_RESURGENT_SOIL_FARMLAND);
+            return MNDSoilUtils.isAbleToPlaceResurgentSoilFarmland((Block)(Object)this);
 
         return original;
     }

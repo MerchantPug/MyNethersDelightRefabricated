@@ -6,6 +6,7 @@ import com.soytutta.mynethersdelight.common.block.LetiosCompostBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilFarmlandBlock;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
+import com.soytutta.mynethersdelight.common.utility.MNDSoilUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -20,18 +21,18 @@ import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
  * Fabric should <b>really</b> have an event for this...
  * This is the bare minimum to keep parity with Forge.
  */
-@Mixin(MushroomColonyBlock.class)
+@Mixin(value = MushroomColonyBlock.class, remap = false)
 public class MushroomColonyBlockMixin {
-    @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;canSustainPlant(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lio/github/fabricators_of_create/porting_lib/common/util/IPlantable;)Z"))
+    @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;canSustainPlant(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lio/github/fabricators_of_create/porting_lib/common/util/IPlantable;)Z"), remap = true)
     private boolean mynethersdelightrefabricated$allowPlantsOnMushroomColony(boolean original, BlockState state, LevelReader level, BlockPos pos) {
-        if (!(state.getBlock() == (Object)this))
+        if (state.getBlock() != (Object)this)
             return original;
 
         if (level.getBlockState(pos.below()).getBlock() instanceof ResurgentSoilBlock)
-            return !((Block)(Object)this).builtInRegistryHolder().is(MNDTags.DOES_NOT_SURVIVE_RESURGENT_SOIL);
+            return MNDSoilUtils.isAbleToPlaceResurgentSoil((Block)(Object)this);
 
         if (level.getBlockState(pos.below()).getBlock() instanceof ResurgentSoilFarmlandBlock)
-            return ((Block)(Object)this).builtInRegistryHolder().is(MNDTags.SURVIVES_RESURGENT_SOIL_FARMLAND);
+            return MNDSoilUtils.isAbleToPlaceResurgentSoilFarmland((Block)(Object)this);
 
         return original;
     }
