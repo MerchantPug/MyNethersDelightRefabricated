@@ -14,5 +14,5 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 public class MNDEnchantments {
     public static final LazyRegistrar<Enchantment> DEF_REG = LazyRegistrar.create(Registries.ENCHANTMENT, MyNethersDelight.MODID);
     public static final EnchantmentCategory HUNTING_WEAPON = ClassTinkerers.getEnum(EnchantmentCategory.class, MyNethersDelightASM.HUNTING_WEAPON_ENCHANTMENT_CATEGORY);
-    public static final RegistryObject<Enchantment> HUNTING = DEF_REG.register("poaching", () -> new HuntingEnchantment( Enchantment.Rarity.VERY_RARE, HUNTING_WEAPON, EquipmentSlot.MAINHAND));
+    public static final RegistryObject<Enchantment> HUNTING = DEF_REG.register("poaching", () -> new HuntingEnchantment(Enchantment.Rarity.VERY_RARE, HUNTING_WEAPON, EquipmentSlot.MAINHAND));
 }

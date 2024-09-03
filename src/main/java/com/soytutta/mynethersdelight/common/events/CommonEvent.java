@@ -50,7 +50,7 @@ public class CommonEvent {
                 && entity instanceof Mob mob && source != null
                 && source.getDirectEntity() instanceof LivingEntity directSource
                 && directSource.getItemInHand(InteractionHand.MAIN_HAND).is(Tags.Items.TOOLS)) {
-            if (EnchantmentHelper.getEnchantments(directSource.getItemInHand(InteractionHand.MAIN_HAND)).get(MNDEnchantments.HUNTING.get()) > 0
+            if (EnchantmentHelper.getEnchantments(directSource.getItemInHand(InteractionHand.MAIN_HAND)).getOrDefault(MNDEnchantments.HUNTING.get(), 0) > 0
                     && (mob.getMaxHealth() < 150.0F || mob.getType().is(MNDTags.SPECIAL_HUNT))
                     && (((directSource.hasEffect(MobEffects.LUCK) || directSource.hasEffect(MobEffects.UNLUCK)) && entity.level().random.nextFloat() < 0.6F)
                     || (entity.level().random.nextFloat() < 0.4F))) {
@@ -274,7 +274,8 @@ public class CommonEvent {
         return true;
     }
 
+    // I am not sure why returning true here is how you cancel, thanks Porting Lib...
     public static boolean onMobDrop(LivingEntity target, DamageSource source, Collection<ItemEntity> drops, int lootingLevel, boolean recentlyHit) {
-        return !(target instanceof Mob mob) || !mob.getTags().contains("prevent_drops");
+        return target instanceof Mob mob && mob.getTags().contains("prevent_drops");
     }
 }
