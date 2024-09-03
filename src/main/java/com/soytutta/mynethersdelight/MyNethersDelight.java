@@ -2,6 +2,7 @@ package com.soytutta.mynethersdelight;
 
 import com.mojang.serialization.Codec;
 import com.soytutta.mynethersdelight.common.MNDCommonSetup;
+import com.soytutta.mynethersdelight.common.block.ResurgentSoilBlock;
 import com.soytutta.mynethersdelight.common.events.CommonEvent;
 import com.soytutta.mynethersdelight.common.item.HotCreamConeItem;
 import com.soytutta.mynethersdelight.common.loot.MNDPastrySlicingModifier;
@@ -50,6 +51,8 @@ public class MyNethersDelight implements ModInitializer
         // Refabricated
         MNDBiomeModifiers.bootstrap();
         HotCreamConeItem.init();
+        ResurgentSoilBlock.init();
+        CommonEvent.init();
     }
 
     void registerLootSerializers() {

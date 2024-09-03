@@ -4,7 +4,7 @@
   "experience": 0.35,
   "ingredients": [
     {
-      "tag": "c:raw_chicken"
+      "tag": "c:foods/cooked_meats/raw_chicken"
     },
     {
       "tag": "mynethersdelight:hot_spice"

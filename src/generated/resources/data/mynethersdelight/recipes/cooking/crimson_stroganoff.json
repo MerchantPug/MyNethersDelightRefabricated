@@ -16,7 +16,7 @@
       "tag": "c:milk"
     },
     {
-      "tag": "c:pasta/raw_pasta"
+      "tag": "c:foods/pastas/raw_pasta"
     }
   ],
   "recipe_book_tab": "meals",

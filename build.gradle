@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "0.6.2"
 }
 
 version = "${mc_version}-${mod_version}.refabricated"
@@ -148,6 +149,35 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+}
+
+publishMods {
+    file = remapJar.archiveFile
+    modLoaders.add("fabric")
+    changelog = file("CHANGELOG.md").getText()
+    version = "${mc_version}-${mod_version}"
+    displayName = "${mod_version}"
+    type = STABLE
+
+    curseforge {
+        projectId = "1093355"
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+
+        minecraftVersions.add("1.20")
+        minecraftVersions.add("1.20.1")
+        javaVersions.add(JavaVersion.VERSION_17)
+
+        clientRequired = true
+        serverRequired = true
+    }
+
+    modrinth {
+        projectId = "uIOfYdnw"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+        minecraftVersions.add("1.20")
+        minecraftVersions.add("1.20.1")
+    }
 }
 
 publishing {
