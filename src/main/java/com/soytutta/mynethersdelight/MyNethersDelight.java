@@ -15,7 +15,7 @@ import io.github.fabricators_of_create.porting_lib.loot.PortingLibLoot;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,5 +61,9 @@ public class MyNethersDelight implements ModInitializer
         Supplier<Codec<MNDPastrySlicingModifier>> PASTRY_SLICING= LOOT.register("pastry_slicing", MNDPastrySlicingModifier.CODEC);
 
         LOOT.register();
+    }
+
+    public static ResourceLocation res(String path) {
+        return new ResourceLocation(MODID, path);
     }
 }

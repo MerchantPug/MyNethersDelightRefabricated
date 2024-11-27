@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
     id "me.modmuss50.mod-publish-plugin" version "0.6.2"
 }
@@ -69,9 +69,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${mc_version}"
 
     mappings loom.layered() {
-        it.officialMojangMappings {
-            setNameSyntheticMembers(false)
-        }
+        it.officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
     }
 
@@ -115,13 +113,11 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     // Uncomment the below to test EMI.
-    /*
     modLocalRuntime("dev.emi:emi-fabric:${emi_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
     // This is also required for EMI as it uses an out of date FAPI.
     modLocalRuntime "net.fabricmc.fabric-api:fabric-api-deprecated:${fabric_api_version}"
-     */
 }
 
 processResources {
