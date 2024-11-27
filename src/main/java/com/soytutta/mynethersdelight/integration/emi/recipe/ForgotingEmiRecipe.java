@@ -69,7 +69,7 @@ public class ForgotingEmiRecipe implements EmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         widgets.addTexture(BACKGROUND, 0, 0, 102, 41, 8, 9);
 
-        addSlot(widgets, FDRecipeWorkstations.ORGANIC_COMPOST, 0, 16);
+        addSlot(widgets, MNDRecipeWorkstations.LETIOS_COMPOST, 0, 16);
         addSlot(widgets, RESURGENT_SOIL, 84, 16).recipeContext(this);
         addSlot(widgets, ACCELERATORS, 54, 44);
         addSlot(widgets, FLAMES, 28, 44);
