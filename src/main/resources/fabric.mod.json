@@ -40,6 +40,9 @@
     "jei_mod_plugin": [
       "com.soytutta.mynethersdelight.integration.jei.JEIPlugin"
     ],
+    "rei_client": [
+      "com.soytutta.mynethersdelight.integration.rei.ClientREIPlugin"
+    ],
     "emi": [
       "com.soytutta.mynethersdelight.integration.emi.EMIPlugin"
     ]
