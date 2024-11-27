@@ -115,5 +115,19 @@
   "mynethersdelight.jei.info.plate_of_stuffed_hoglin": "It's astonishing how much Dishes can be obtained from such a Primitive Feast...",
   "mynethersdelight.jei.info.r_soil": "Almost every plant or crop feels comfortable in this soil, if you want to moisten need fire instead of water.",
   "mynethersdelight.jei.info.strider_egg": "Wait... Are Striders Ovoviviparous? that's weird...\n\nAnyway, it's only obtainable by careful hunting.\nhard shell, it can only be eaten starry...",
-  "mynethersdelight.jei.info.wild_powdery": "Powdery Canes are an invasive crop in Crimson Forests.\n\nIts Berries are explosive on Contact, try Cutting the red stem..."
+  "mynethersdelight.jei.info.wild_powdery": "Powdery Canes are an invasive crop in Crimson Forests.\n\nIts Berries are explosive on Contact, try Cutting the red stem...",
+
+  "emi.category.mynethersdelight.forgoting": "Forgoting",
+  "tag.item.mynethersdelight.block_of_powdery": "Powdery Blocks",
+  "tag.item.mynethersdelight.boiled_egg_candidate": "Boiled Egg Candidates",
+  "tag.item.mynethersdelight.chili_meats": "Chili Meats",
+  "tag.item.mynethersdelight.curry_meats": "Curry Meats",
+  "tag.item.mynethersdelight.ghast_meats": "Ghast Meats",
+  "tag.item.mynethersdelight.hoglin_cure": "Hoglin Cures",
+  "tag.item.mynethersdelight.hoglin_waxed": "Hoglin Waxes",
+  "tag.item.mynethersdelight.hot_spice": "Hot Spices",
+  "tag.item.mynethersdelight.stove_fire_fuel": "Stove Fire Fuels",
+  "tag.item.mynethersdelight.stove_soul_fuel": "Stove Soul Fuels",
+  "tag.item.mynethersdelight.strider_meats": "Strider Meats",
+  "tag.item.mynethersdelight.stuffed_hoglin_items": "Stuffed Hoglin Items"
 }
