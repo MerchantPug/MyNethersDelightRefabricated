@@ -14,6 +14,6 @@ public class CompatibilityTags {
     }
 
     private static TagKey<Item> externalItemTag(String modId, String path) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(modId, path));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modId, path));
     }
 }

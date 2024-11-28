@@ -15,5 +15,5 @@ public class MNDWoodTypes {
                     .hangingSignSoundGroup(SoundType.BAMBOO_WOOD_HANGING_SIGN)
                     .fenceGateCloseSound(SoundEvents.BAMBOO_WOOD_FENCE_GATE_CLOSE)
                     .fenceGateOpenSound(SoundEvents.BAMBOO_WOOD_FENCE_GATE_OPEN)
-                    .register(new ResourceLocation(MyNethersDelight.MODID + ":powdery"), BlockSetType.BAMBOO);
+                    .register(ResourceLocation.parse(MyNethersDelight.MODID + ":powdery"), BlockSetType.BAMBOO);
 }

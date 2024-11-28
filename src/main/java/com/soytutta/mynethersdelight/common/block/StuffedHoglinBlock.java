@@ -5,6 +5,8 @@
 
 package com.soytutta.mynethersdelight.common.block;
 
+
+import com.mojang.serialization.MapCodec;
 import com.soytutta.mynethersdelight.common.utility.MNDTextUtils;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import net.minecraft.core.BlockPos;
@@ -13,7 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -21,11 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.DoubleBlockCombiner.BlockType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -44,8 +43,12 @@ import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // thanks Umpaz for letting me use this code <3
 public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
+    public static final MapCodec<StuffedHoglinBlock> CODEC = simpleCodec(StuffedHoglinBlock::new);
 
     public static final EnumProperty<BedPart> PART;
     public static final IntegerProperty SERVINGS;
@@ -61,6 +64,11 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
     public StuffedHoglinBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(SERVINGS, 11).setValue(PART, BedPart.HEAD));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     public IntegerProperty getServingsProperty() {
@@ -128,8 +136,29 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).isSolid();
     }
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder lootParams) {
+        List<ItemStack> drops = new ArrayList<>(super.getDrops(state, lootParams));
+        if (!lootParams.getLevel().isClientSide) {
+            BedPart part = state.getValue(PART);
+            int serving = state.getValue(SERVINGS);
 
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+            int bonemealCount = 0;
+            if (part == BedPart.HEAD) {
+                bonemealCount = (serving == 7) ? 1 : (serving <= 6) ? 2 : 0;
+            } else if (part == BedPart.FOOT) {
+                bonemealCount = (serving == 5) ? 1 : (serving <= 4) ? 2 : 0;
+            }
+
+
+            if (bonemealCount > 0) {
+                drops.add(new ItemStack(Items.BONE_MEAL, bonemealCount));
+            }
+        }
+        return drops;
+    }
+
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && player.isCreative()) {
             BedPart bedpart = state.getValue(PART);
 
@@ -145,24 +174,34 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
         }
 
         super.playerWillDestroy(level, pos, state, player);
+        return state;
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_49479_) {
-        Direction direction = p_49479_.getHorizontalDirection();
-        BlockPos blockpos = p_49479_.getClickedPos();
-        BlockPos blockpos1 = blockpos.relative(direction);
-        Level level = p_49479_.getLevel();
-        return level.getBlockState(blockpos1).canBeReplaced(p_49479_) && level.getWorldBorder().isWithinBounds(blockpos1) ? (BlockState)this.defaultBlockState().setValue(FACING, direction) : null;
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Direction direction = context.getHorizontalDirection();
+        BlockPos clickedPos = context.getClickedPos();
+        BlockPos adjacentPos = clickedPos.relative(direction);
+        Level level = context.getLevel();
+
+        if (level.getBlockState(adjacentPos).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(adjacentPos)) {
+            if (canSurvive(level.getBlockState(adjacentPos), level, adjacentPos) &&
+                    canSurvive(this.defaultBlockState(), level, clickedPos)) {
+                return this.defaultBlockState().setValue(FACING, direction);
+            }
+        }
+        Player player = context.getPlayer();
+        if (player != null) {
+            player.displayClientMessage(MNDTextUtils.getTranslation("block.feast.space_required"), true);
+        }
+        return null;
     }
 
-    // Moved to item init.
-    /*
-    @Override
-    public PushReaction getPistonPushReaction() {
+    @Deprecated
+    public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
     }
-     */
 
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
@@ -181,9 +220,8 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int servings = state.getValue(SERVINGS);
-        ItemStack heldStack = player.getItemInHand(handIn);
         if (servings > 9) {
             if (heldStack.is(ModTags.KNIVES)) {
                 return this.cutEar(level, pos, state);
@@ -195,15 +233,15 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
         if (servings < 10) {
             if (heldStack.is(Items.BOWL)) {
                 if (servings == 9) {
-                    return this.takeServing(level, pos, state, player, handIn, MNDItems.PLATE_OF_STUFFED_HOGLIN_SNOUT.get());
+                    return this.takeServing(level, pos, state, player, hand, MNDItems.PLATE_OF_STUFFED_HOGLIN_SNOUT.get());
                 }
 
                 if (servings > 4 && servings < 9) {
-                    return this.takeServing(level, pos, state, player, handIn, MNDItems.PLATE_OF_STUFFED_HOGLIN_HAM.get());
+                    return this.takeServing(level, pos, state, player, hand, MNDItems.PLATE_OF_STUFFED_HOGLIN_HAM.get());
                 }
 
                 if (servings > 0 && servings < 5) {
-                    return this.takeServing(level, pos, state, player, handIn, MNDItems.PLATE_OF_STUFFED_HOGLIN.get());
+                    return this.takeServing(level, pos, state, player, hand, MNDItems.PLATE_OF_STUFFED_HOGLIN.get());
                 }
             }
 
@@ -215,10 +253,10 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
-    protected InteractionResult cutEar(Level level, BlockPos pos, BlockState state) {
+    protected ItemInteractionResult cutEar(Level level, BlockPos pos, BlockState state) {
         int servings = state.getValue(SERVINGS);
         BedPart part = state.getValue(PART);
         BlockPos pairPos = pos.relative(getDirectionToOther(part, state.getValue(FACING)));
@@ -227,10 +265,10 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
         level.setBlock(pos, state.setValue(SERVINGS, servings - 1), 3);
         Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(MNDItems.ROAST_EAR.get()));
         level.playSound(null, pos, ModSounds.BLOCK_CUTTING_BOARD_KNIFE.get(), SoundSource.PLAYERS, 0.8F, 0.8F);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
-    protected InteractionResult takeServing(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, Item serving) {
+    protected ItemInteractionResult takeServing(Level level, BlockPos pos, BlockState state, Player player, InteractionHand handIn, Item serving) {
         int servings = state.getValue(SERVINGS);
         BedPart part = state.getValue(PART);
         BlockPos pairPos = pos.relative(getDirectionToOther(part, state.getValue(FACING)));
@@ -246,8 +284,8 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
             player.drop(new ItemStack(serving), false);
         }
 
-        level.playSound(null, pos, SoundEvents.ARMOR_EQUIP_GENERIC, SoundSource.PLAYERS, 1.0F, 1.0F);
-        return InteractionResult.SUCCESS;
+        level.playSound(null, pos, SoundEvents.ARMOR_EQUIP_GENERIC.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        return ItemInteractionResult.SUCCESS;
     }
 
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
@@ -256,6 +294,11 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
+    }
+
+    @Deprecated
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return false;
     }
 
     static {

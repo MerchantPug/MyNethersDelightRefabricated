@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Frog.class)
 public abstract class FrogEntityMixin {
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V", at = @At("TAIL"))
     private void onInit(EntityType<? extends Frog> entityType, Level level, CallbackInfo ci) {
         Frog frog = (Frog) (Object) this;
         GoalSelector goalSelector = ((MobAccessor)frog).mynethersdelightrefabricated$getGoalSelector();

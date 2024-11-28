@@ -1,16 +1,16 @@
 {
-  "type": "mynethersdelight:pastry_slicing",
+  "type": "mynethersdelight:especial_drop",
   "conditions": [
     {
       "condition": "minecraft:match_tool",
       "predicate": {
-        "tag": "farmersdelight:tools/knives"
+        "items": "#farmersdelight:tools/knives"
       }
     },
     {
       "condition": "minecraft:block_state_property",
-      "block": "mynethersdelight:magma_cake"
+      "block": "mynethersdelight:magma_cake_block"
     }
   ],
-  "slice": "mynethersdelight:magma_cake_slice"
+  "drop": "mynethersdelight:magma_cake_slice"
 }

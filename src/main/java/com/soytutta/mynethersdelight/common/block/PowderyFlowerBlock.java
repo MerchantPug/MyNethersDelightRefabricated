@@ -1,9 +1,10 @@
 package com.soytutta.mynethersdelight.common.block;
 
+import com.mojang.serialization.MapCodec;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -12,34 +13,45 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.BambooSaplingBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import vectorwing.farmersdelight.common.tag.CommonTags;
 
 import java.util.Random;
 
 import static com.soytutta.mynethersdelight.common.block.PowderyCaneBlock.LEAVE;
 
-public class PowderyFlowerBlock extends BambooSaplingBlock {
-    public static final BooleanProperty LIT = BooleanProperty.create("lit");
+public class PowderyFlowerBlock extends Block implements BonemealableBlock {
+    public static final MapCodec<PowderyFlowerBlock> CODEC = simpleCodec(PowderyFlowerBlock::new);
+    protected static final VoxelShape SAPLING_SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 12.0, 12.0);
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty PRESSURE = IntegerProperty.create("pressure", 0, 2);
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 2);
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
 
     public PowderyFlowerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false).setValue(PRESSURE, 0).setValue(AGE, 0));
+    }
+
+    public MapCodec<PowderyFlowerBlock> codec() {
+        return CODEC;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -51,6 +63,11 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState blockBelow = level.getBlockState(pos.below());
         return blockBelow.is(MNDTags.POWDERY_CANNON_PLANTABLE_ON) || blockBelow.is(MNDTags.POWDERY_CANE);
+    }
+
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        Vec3 vec3 = state.getOffset(level, pos);
+        return SAPLING_SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
 
     @Override
@@ -65,6 +82,8 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
         }
         if (isLit && age < 2) {
             level.setBlock(pos, state.setValue(LIT, false), 2);
+        } else if (isLit && direction == Direction.DOWN) {
+            explodeAndReset((Level) level, pos, state, age);
         }
         return super.updateShape(state, direction, offsetState, level, pos, offsetPos);
     }
@@ -115,16 +134,16 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
 
         if (!maxHeight) {
             if (age != 2 && random.nextInt(8) == 0 && world.isEmptyBlock(pos.above()) && isBlockBelowLeave) {
-            this.growBamboo(world, pos);
+            this.growBullet(world, pos);
             } else if (age <= 2 && (isBlockBelowPerfectSoil || isBlockBelowPowderyCane || isBlockBelowPowderySoil) && world.isEmptyBlock(pos.above())) {
                 if (isBlockBelowPerfectSoil) {
-                this.growBamboo(world, pos);
+                this.growBullet(world, pos);
                 } else if (isBlockBelowPowderyCane && isBlockBelowLeave && random.nextInt(30) == 0) {
-                this.growBamboo(world, pos);
+                this.growBullet(world, pos);
                 } else if (!isBlockBelowLeave && random.nextInt(300) == 0) {
-                this.growBamboo(world, pos);
+                this.growBullet(world, pos);
                 } else if (!isBlockBelowPowderySoil && random.nextInt(1200) == 0) {
-                this.growBamboo(world, pos);
+                this.growBullet(world, pos);
                 }
             }
         }
@@ -147,18 +166,19 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && state.getValue(PRESSURE) < 2 && !player.isCrouching()) {
             level.setBlock(pos, state.setValue(PRESSURE, state.getValue(PRESSURE) + 1), 2);
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (!heldItem.is(CommonTags.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
         }
         super.playerWillDestroy(level, pos, state, player);
+        return state;
     }
 
     @Override
@@ -193,36 +213,43 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
+    protected ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(AGE);
 
         if ( age == 2 && state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
-            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
-                heldItem.hurtAndBreak(1, player, (action) -> { action.broadcastBreakEvent(hand); });
+            if (heldItem.is(CommonTags.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+                heldItem.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
                 level.destroyBlock(pos, true);
                 Random random = new Random();
                 popResource(level, pos, new ItemStack(MNDItems.BULLET_PEPPER.get(), random.nextInt(100) < 25 ? 1 : 0));
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return super.use(state, level, pos, player, hand, context);
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    /*
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!level.isClientSide && state.getValue(LIT)) {
+            int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
+            explodeAndReset(level, pos, state, age);
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
+    }
+
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
-     */
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return new ItemStack(MNDItems.BULLET_PEPPER.get());
     }
 
-    @Override
-    protected void growBamboo(Level level, BlockPos pos) {
+    protected void growBullet(Level level, BlockPos pos) {
         BlockState currentBlockState = level.getBlockState(pos);
         boolean isLit = currentBlockState.getValue(PowderyFlowerBlock.LIT);
         BlockState newBlockState = defaultBlockState();
@@ -231,4 +258,17 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
         }
         level.setBlock(pos.above(), newBlockState, 3);
     }
+
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return level.getBlockState(pos.above()).isAir();
+    }
+
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        this.growBullet(level, pos);
+    }
+
 }

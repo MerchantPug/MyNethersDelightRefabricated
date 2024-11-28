@@ -1,4 +1,5 @@
-- Fixed Resurgent Soil (Farmland) having incorrect logic for allowed placeable blocks. ([#1](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/1)).
-- Added EMI compat.
-- Added REI compat.
-- Changed version schema to better reflect the actual version numbers of MND.
+- Updated to 1.21.1
+- Added missing Powdery signs.
+- Fixed Powdery Cane not generating in Crimson Forests.
+    - You can add biomes to the `mynethersdelight:powdery_cane_whitelist` tag to allow powdery cane to generate in biomes.
+    - You can add biomes to the `mynethersdelight:powdery_cane_blacklist` tag to prevent powdery cane from generating in biomes. 

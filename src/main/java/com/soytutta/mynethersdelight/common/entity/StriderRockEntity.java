@@ -3,9 +3,11 @@ package com.soytutta.mynethersdelight.common.entity;
 
 import com.soytutta.mynethersdelight.common.registry.MNDEntityTypes;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.UnknownNullability;
 
 public class StriderRockEntity extends ThrowableItemProjectile {
     public StriderRockEntity(EntityType<StriderRockEntity> StriderRockEntityType, Level level) {
@@ -89,5 +92,16 @@ public class StriderRockEntity extends ThrowableItemProjectile {
     @Override
     protected Item getDefaultItem() {
         return MNDItems.STRIDER_ROCK.get();
+    }
+
+    // Thanks Porting Lib...
+    @Override
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return new CompoundTag();
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
+
     }
 }

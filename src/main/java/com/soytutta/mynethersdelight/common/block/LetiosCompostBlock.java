@@ -6,11 +6,14 @@ package com.soytutta.mynethersdelight.common.block;
 
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
@@ -80,13 +83,6 @@ public class LetiosCompostBlock extends Block {
         }
     }
 
-    /*
-    @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return false;
-    }
-     */
-
     @Override
     @SuppressWarnings("deprecation")
     public boolean hasAnalogOutputSignal(BlockState state) {
@@ -107,11 +103,13 @@ public class LetiosCompostBlock extends Block {
     }
 
     /*
-    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
-            if (plantable instanceof NetherWartBlock && facing == Direction.UP) {
-                return true;
-            }
-            return super.canSustainPlant(state, world, pos, facing, plantable);
+    @Override
+    public TriState canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, BlockState plantState) {
+        if (plantState.getBlock() instanceof NetherWartBlock) {
+            return TriState.TRUE;
         }
-     */
+        return TriState.DEFAULT;
     }
+     */
+}
+

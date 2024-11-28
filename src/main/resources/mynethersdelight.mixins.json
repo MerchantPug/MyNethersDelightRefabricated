@@ -1,23 +1,24 @@
 {
   "required": true,
   "package": "com.soytutta.mynethersdelight.core.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "refmap": "mynethersdelight.refmap.json",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "BushBlockMixin",
     "CactusBlockMixin",
     "CropBlockMixin",
-    "FireworkRocketRecipeMixin",
     "FrogEntityMixin",
+    "HangingSignBlockEntityMixin",
+    "KeepResurgentSoilGiantTreeMixin",
+    "KeepResurgentSoilTreeMixin",
     "MobAccessor",
     "MushroomBlockMixin",
     "MushroomColonyBlockMixin",
     "PitcherCropBlockMixin",
     "StemBlockMixin",
-    "SugarCaneBlockMixin",
-    "amendments.InteractEventsMixin"
+    "SugarCaneBlockMixin"
   ],
   "client": [
+    "SheetsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

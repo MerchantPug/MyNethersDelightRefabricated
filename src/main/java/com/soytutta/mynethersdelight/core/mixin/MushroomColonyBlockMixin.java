@@ -23,7 +23,7 @@ import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
  */
 @Mixin(value = MushroomColonyBlock.class, remap = false)
 public class MushroomColonyBlockMixin {
-    @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;canSustainPlant(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lio/github/fabricators_of_create/porting_lib/common/util/IPlantable;)Z"), remap = true)
+    @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lvectorwing/farmersdelight/common/block/MushroomColonyBlock;mayPlaceOn(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"), remap = true)
     private boolean mynethersdelightrefabricated$allowPlantsOnMushroomColony(boolean original, BlockState state, LevelReader level, BlockPos pos) {
         if (state.getBlock() != (Object)this)
             return original;

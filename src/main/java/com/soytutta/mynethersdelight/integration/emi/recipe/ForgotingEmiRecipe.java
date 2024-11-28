@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ForgotingEmiRecipe implements EmiRecipe {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(MyNethersDelight.MODID, "textures/gui/jei/composition.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MyNethersDelight.MODID, "textures/gui/jei/composition.png");
 
     private static final EmiStack RESURGENT_SOIL = EmiStack.of(MNDItems.RESURGENT_SOIL.get());
     private static final EmiIngredient ACCELERATORS = EmiIngredient.of(MNDTags.SHOWCASE_ACTIVATORS);

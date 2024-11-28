@@ -6,17 +6,16 @@
 package com.soytutta.mynethersdelight.common.item;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
+import io.github.fabricators_of_create.porting_lib.entity.EffectCures;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import vectorwing.farmersdelight.common.item.DrinkableItem;
 import vectorwing.farmersdelight.common.registry.ModEffects;
@@ -27,33 +26,32 @@ public class StriderEggItem extends DrinkableItem {
         super(properties, false, true);
     }
 
+    @Override
     public void affectConsumer(ItemStack stack, Level level, LivingEntity consumer) {
-        Iterator<MobEffectInstance> itr = consumer.getActiveEffects().iterator();
-        ArrayList<MobEffectInstance> harmfulEffects = new ArrayList<>();
+        List<MobEffectInstance> harmfulEffects = new ArrayList<>();
 
-        while (itr.hasNext()) {
-            MobEffectInstance selectedEffect = itr.next();
-            if (selectedEffect.getEffect().getCategory().equals(MobEffectCategory.HARMFUL) && selectedEffect.isCurativeItem(new ItemStack(Items.MILK_BUCKET))) {
-                harmfulEffects.add(selectedEffect);
+        for (MobEffectInstance effectInstance : consumer.getActiveEffects()) {
+            if ((effectInstance.getEffect().value()).getCategory().equals(MobEffectCategory.HARMFUL)
+                    && effectInstance.getCures().contains(EffectCures.MILK)) {
+            harmfulEffects.add(effectInstance);
             }
         }
 
         if (!harmfulEffects.isEmpty()) {
             MobEffectInstance selectedEffect = harmfulEffects.get(level.random.nextInt(harmfulEffects.size()));
-            MobEffect effect = selectedEffect.getEffect();
-            consumer.removeEffect(effect);
-
             int remainingDuration = selectedEffect.getDuration();
-            int nourishDuration = remainingDuration / 10;
+            int nourishDuration = remainingDuration / 2;
+
             if (nourishDuration > 0) {
-                MobEffectInstance regenerationEffect = new MobEffectInstance(ModEffects.NOURISHMENT.get(), nourishDuration * 3, 0);
-                consumer.addEffect(regenerationEffect);
+                consumer.addEffect(new MobEffectInstance(ModEffects.NOURISHMENT, nourishDuration, 0));
+                level.playSound(null, consumer.blockPosition(), SoundEvents.CHISELED_BOOKSHELF_INSERT_ENCHANTED, consumer.getSoundSource(), 1.0F, 1.0F);
             }
+
+            consumer.removeEffect(selectedEffect.getEffect());
         }
     }
 
-
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 45;
     }
 

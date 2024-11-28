@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderType;
 public class MyNethersDelightClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ClientSetupEvents.onEntityRendererRegister();
         ClientSetupEvents.onRegisterRenderers();
         ClientSetupEvents.init();
         registerRenderLayers(BlockRenderLayerMap.INSTANCE);

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class MNDSignBlockEntity extends SignBlockEntity {
     public MNDSignBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(pWorldPosition, pBlockState);
+        super(MNDBlockEntityTypes.MND_SIGN.get(), pWorldPosition, pBlockState);
     }
 
     public BlockEntityType<?> getType() {

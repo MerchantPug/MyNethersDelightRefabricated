@@ -33,6 +33,8 @@ repositories {
         url = 'https://repo.greenhouse.house/releases/'
     }
 
+    maven { url = "https://repo.greenhouse.house/snapshots/" }
+
     maven { url "https://cursemaven.com" }
 
     maven { url "https://maven.parchmentmc.org" }
@@ -77,27 +79,27 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    modImplementation("com.github.Chocohead:Fabric-ASM:${fabricasm_version}") {
-        exclude (group: "net.fabricmc.fabric-api")
-    }
-
     modImplementation("vectorwing:FarmersDelight:${farmersdelight_version}+refabricated") {
         exclude(group: "net.fabricmc")
     }
-    modImplementation "curse.maven:farmers-respite-fabric-811003:5252387"
-    modImplementation "curse.maven:forge-config-api-port-547434:4583000"
-    modImplementation "curse.maven:amendments-896746:5462736"
+    // modImplementation "curse.maven:farmers-respite-fabric-811003:5252387"
+    modImplementation "curse.maven:forge-config-api-port-547434:5904757"
+    modImplementation "curse.maven:amendments-896746:5820197"
 
     // Every compat
-    modCompileOnly "curse.maven:selene-499980:5666908"
-    modRuntimeOnly "curse.maven:selene-499980:5666908"
-    modRuntimeOnly "curse.maven:every-compat-628539:5670282"
+    modCompileOnly "curse.maven:selene-499980:5934586"
+    modRuntimeOnly "curse.maven:selene-499980:5934586"
+    modRuntimeOnly "curse.maven:every-compat-628539:5933143"
 
     modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}")
 
-    modCompileOnly("com.blamejared.crafttweaker:CraftTweaker-fabric-1.20.1:${crafttweaker_version}")
-    // Uncomment the below to test CraftTweaker.
-    // modLocalRuntime("com.blamejared.crafttweaker:CraftTweaker-fabric-1.20.1:${crafttweaker_version}")
+    // TODO: Remove me as soon as https://github.com/MehVahdJukaar/FarmersDelightRefabricated/commit/47eb4196cd2ecc275fcb740b120e697dc43494aa is uploaded to maven.
+    for (String module in port_lib_modules.split(",")) {
+        modImplementation("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
+    }
+    for (String module in port_lib_temp_modules.split(",")) {
+        modImplementation("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
+    }
 
     modCompileOnly("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     modCompileOnly("mezz.jei:jei-${mc_version}-fabric-api:${jei_version}")

@@ -1,7 +1,7 @@
 package com.soytutta.mynethersdelight.common.loot;
 
 import com.google.common.base.Suppliers;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
@@ -23,17 +23,14 @@ public class RemplaceLootModifier extends LootModifier {
     private final Item newItem;
     private final EntityType<?> entity;
 
-    public static final Supplier<Codec<RemplaceLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst)
-            .and(
-                    inst.group(
-                            BuiltInRegistries.ITEM.byNameCodec().fieldOf("replaces").forGetter((m) -> m.replacedItem),
-                            BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter((m) -> m.newItem),
-                            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter((m) -> m.entity)
-                    )
-            )
-            .apply(inst, RemplaceLootModifier::new)));
+    public static final Supplier<MapCodec<RemplaceLootModifier>> CODEC = Suppliers.memoize(() ->
+            RecordCodecBuilder.mapCodec(inst -> codecStart(inst)
+                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("replaces").forGetter(RemplaceLootModifier::getReplacedItem))
+                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(RemplaceLootModifier::getNewItem))
+                    .and(BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter(RemplaceLootModifier::getEntity))
+                    .apply(inst, RemplaceLootModifier::new)));
 
-    protected RemplaceLootModifier(LootItemCondition[] conditionsIn, Item replacedItem, Item newItem, EntityType<?> entity) {
+    public RemplaceLootModifier(LootItemCondition[] conditionsIn, Item replacedItem, Item newItem, EntityType<?> entity) {
         super(conditionsIn);
         this.replacedItem = replacedItem;
         this.newItem = newItem;
@@ -43,22 +40,32 @@ public class RemplaceLootModifier extends LootModifier {
     @NotNull
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        Entity t = context.getParamOrNull(LootContextParams.THIS_ENTITY);
-        if (t == null || t.getType() != this.entity) return generatedLoot;
-        int amountOfItems = 0;
-        for (ItemStack i : generatedLoot) {
-            if (i.getItem() == replacedItem) {
-                amountOfItems += i.getCount();
-            }
+        Entity entity = context.getParamOrNull(LootContextParams.THIS_ENTITY);
+        if (entity != null && entity.getType() == this.entity) {
+            int amountOfItems = generatedLoot.stream()
+                    .filter(itemStack -> itemStack.getItem() == replacedItem)
+                    .mapToInt(ItemStack::getCount)
+                    .sum();
+            generatedLoot.removeIf(itemStack -> itemStack.getItem() == replacedItem);
+            generatedLoot.add(new ItemStack(newItem, amountOfItems));
         }
-        generatedLoot.removeIf(i -> i.getItem() == replacedItem);
-        generatedLoot.add(new ItemStack(newItem, amountOfItems));
         return generatedLoot;
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec()
-    {
+    public MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC.get();
+    }
+
+    public Item getReplacedItem() {
+        return replacedItem;
+    }
+
+    public Item getNewItem() {
+        return newItem;
+    }
+
+    public EntityType<?> getEntity() {
+        return entity;
     }
 }

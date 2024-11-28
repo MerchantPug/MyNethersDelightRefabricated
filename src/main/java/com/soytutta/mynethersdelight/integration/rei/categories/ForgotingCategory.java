@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ForgotingCategory implements DisplayCategory<ForgotingDisplay> {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation("mynethersdelight", "textures/gui/jei/composition.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("mynethersdelight", "textures/gui/jei/composition.png");
 
     @Override
     public CategoryIdentifier<? extends ForgotingDisplay> getCategoryIdentifier() {
