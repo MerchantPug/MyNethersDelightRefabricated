@@ -8,7 +8,6 @@ import com.soytutta.mynethersdelight.common.item.HotCreamConeItem;
 import com.soytutta.mynethersdelight.common.loot.MNDPastrySlicingModifier;
 import com.soytutta.mynethersdelight.common.loot.RemplaceLootModifier;
 import com.soytutta.mynethersdelight.common.registry.*;
-import com.soytutta.mynethersdelight.core.data.worldgen.biome.MNDBiomeModifiers;
 import com.soytutta.mynethersdelight.integration.MNDEveryCompat;
 import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
 import io.github.fabricators_of_create.porting_lib.loot.PortingLibLoot;
@@ -49,7 +48,7 @@ public class MyNethersDelight implements ModInitializer
         }
 
         // Refabricated
-        MNDBiomeModifiers.bootstrap();
+        MNDBiomeModifiers.init();
         HotCreamConeItem.init();
         ResurgentSoilBlock.init();
         CommonEvent.init();

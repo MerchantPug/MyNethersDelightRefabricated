@@ -7,6 +7,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public class MNDTags {
@@ -55,6 +56,9 @@ public class MNDTags {
     public static final TagKey<Block> SURVIVES_RESURGENT_SOIL_FARMLAND = modBlockTag("survives/resurgent_soil_farmland");
     public static final TagKey<Block> DOES_NOT_SURVIVE_RESURGENT_SOIL_FARMLAND = modBlockTag("does_not_survive/resurgent_soil_farmland");
 
+    public static final TagKey<Biome> POWDERY_CANE_WHITELIST = modBiomeTag("powdery_cane_whitelist");
+    public static final TagKey<Biome> POWDERY_CANE_BLACKLIST = modBiomeTag("powdery_cane_blacklist");
+
     public MNDTags() {}
 
     private static TagKey<Item> modItemTag(String path) {
@@ -65,6 +69,9 @@ public class MNDTags {
     }
     private static TagKey<EntityType<?>> modEntityTag(String path) {
         return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("farmersdelight", path));
+    }
+    private static TagKey<Biome> modBiomeTag(String path) {
+        return TagKey.create(Registries.BIOME, new ResourceLocation("mynethersdelight", path));
     }
 
 }
