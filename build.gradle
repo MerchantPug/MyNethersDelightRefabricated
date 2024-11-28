@@ -165,6 +165,9 @@ publishMods {
 
         clientRequired = true
         serverRequired = true
+
+        requires("fabric-api", "farmers-delight-refabricated")
+        optional("jei", "roughly-enough-items", "emi")
     }
 
     modrinth {
@@ -173,6 +176,9 @@ publishMods {
 
         minecraftVersions.add("1.20")
         minecraftVersions.add("1.20.1")
+
+        requires("fabric-api", "farmers-delight-refabricated")
+        optional("jei", "rei", "emi")
     }
 }
 
