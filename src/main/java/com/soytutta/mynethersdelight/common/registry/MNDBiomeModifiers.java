@@ -31,7 +31,6 @@ public class MNDBiomeModifiers {
                 GenerationStep.Decoration.VEGETAL_DECORATION, POWDERY_CANE);
     }
 
-    //TODO: use humidity too? for rice
     public record MNDBiomeSelector(float minTemperature, float maxTemperature, TagKey<Biome> allowed,
                                   @Nullable TagKey<Biome> denied) implements Predicate<BiomeSelectionContext> {
 
