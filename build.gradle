@@ -153,7 +153,7 @@ publishMods {
     file = remapJar.archiveFile
     modLoaders.add("fabric")
     changelog = file("CHANGELOG.md").getText()
-    version = "${mc_version}-${mod_version}"
+    version = "${mod_version}"
     displayName = "${mod_version}"
     type = STABLE
 
@@ -161,8 +161,7 @@ publishMods {
         projectId = "1093355"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 
-        minecraftVersions.add("1.20")
-        minecraftVersions.add("1.20.1")
+        minecraftVersions.add("1.21.1")
         javaVersions.add(JavaVersion.VERSION_17)
 
         clientRequired = true
@@ -176,8 +175,7 @@ publishMods {
         projectId = "uIOfYdnw"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
-        minecraftVersions.add("1.20")
-        minecraftVersions.add("1.20.1")
+        minecraftVersions.add("1.21.1")
 
         requires("fabric-api", "farmers-delight-refabricated")
         optional("jei", "rei", "emi")
