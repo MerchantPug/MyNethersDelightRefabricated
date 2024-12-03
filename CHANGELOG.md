@@ -1,5 +1,2 @@
-- Updated to 1.21.1
-- Added missing Powdery signs.
-- Fixed Powdery Cane not generating in Crimson Forests.
-    - You can add biomes to the `mynethersdelight:powdery_cane_whitelist` tag to allow powdery cane to generate in biomes.
-    - You can add biomes to the `mynethersdelight:powdery_cane_blacklist` tag to prevent powdery cane from generating in biomes. 
+- Fixed crash with other mods adding signs.
+- Fixed crash when placing new cabinet blocks from this mod.
