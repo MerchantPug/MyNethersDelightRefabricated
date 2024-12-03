@@ -8,6 +8,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 
 public class MyNethersDelight implements ModInitializer
 {
@@ -33,6 +34,14 @@ public class MyNethersDelight implements ModInitializer
         CommonEvent.init();
         HotCreamConeItem.StriderFoodEvent.init();
         MNDBiomeModifiers.init();
+        addCabinets();
+    }
+
+    private static void addCabinets() {;
+        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.BLACKSTONE_BRICKS_CABINET.get());
+        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.NETHER_BRICKS_CABINET.get());
+        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.POWDERY_CABINET.get());
+        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.RED_NETHER_BRICKS_CABINET.get());
     }
 
     public static ResourceLocation res(String path) {
