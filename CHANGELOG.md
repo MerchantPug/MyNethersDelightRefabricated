@@ -1,4 +1,2 @@
-- Fixed Resurgent Soil (Farmland) having incorrect logic for allowed placeable blocks. ([#1](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/1)).
-- Added EMI compat.
-- Added REI compat.
-- Changed version schema to better reflect the actual version numbers of MND.
+- Backported 1.21.1 customisation features for Powdery Cane generation.
+- Fixed Powdery Signs and Hanging Signs not being present.

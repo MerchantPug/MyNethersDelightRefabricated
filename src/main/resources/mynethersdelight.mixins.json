@@ -9,6 +9,7 @@
     "CropBlockMixin",
     "FireworkRocketRecipeMixin",
     "FrogEntityMixin",
+    "HangingSignBlockEntityMixin",
     "MobAccessor",
     "MushroomBlockMixin",
     "MushroomColonyBlockMixin",
