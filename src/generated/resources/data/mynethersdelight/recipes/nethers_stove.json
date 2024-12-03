@@ -10,7 +10,7 @@
       "item": "minecraft:campfire"
     },
     "i": {
-      "tag": "c:ingots/nether_brick"
+      "tag": "c:nether_brick_ingots"
     }
   },
   "pattern": [

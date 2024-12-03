@@ -1,2 +1,2 @@
-- Backported 1.21.1 customisation features for Powdery Cane generation.
-- Fixed Powdery Signs and Hanging Signs not being present.
+- Fixed as many incorrect tag references in recipes as possible.
+  - If there are still any more, please report them.

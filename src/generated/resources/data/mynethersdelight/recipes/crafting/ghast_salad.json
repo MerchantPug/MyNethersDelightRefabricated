@@ -6,10 +6,10 @@
       "tag": "mynethersdelight:ghast_meats"
     },
     {
-      "tag": "c:vegetables"
+      "tag": "c:foods/vegetables"
     },
     {
-      "tag": "c:vegetables/carrot"
+      "tag": "c:foods/vegetables/carrots"
     },
     {
       "item": "minecraft:bowl"
