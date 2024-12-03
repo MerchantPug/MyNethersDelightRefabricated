@@ -1,10 +1,12 @@
 package com.soytutta.mynethersdelight.client;
 
 import com.soytutta.mynethersdelight.client.event.ClientSetupEvents;
+import com.soytutta.mynethersdelight.common.block.utility.MNDWoodTypes;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 
 // Refabricated: This is new.
 public class MyNethersDelightClient implements ClientModInitializer {
@@ -13,6 +15,9 @@ public class MyNethersDelightClient implements ClientModInitializer {
         ClientSetupEvents.onRegisterRenderers();
         ClientSetupEvents.init();
         registerRenderLayers(BlockRenderLayerMap.INSTANCE);
+
+        Sheets.SIGN_MATERIALS.put(MNDWoodTypes.POWDERY, Sheets.createSignMaterial(MNDWoodTypes.POWDERY));
+        Sheets.HANGING_SIGN_MATERIALS.put(MNDWoodTypes.POWDERY, Sheets.createHangingSignMaterial(MNDWoodTypes.POWDERY));
     }
 
     public static void registerRenderLayers(BlockRenderLayerMap instance) {
