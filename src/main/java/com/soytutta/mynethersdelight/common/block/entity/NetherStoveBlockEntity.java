@@ -3,7 +3,6 @@ package com.soytutta.mynethersdelight.common.block.entity;
 import java.util.Optional;
 
 import com.soytutta.mynethersdelight.common.registry.MNDBlockEntityTypes;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -22,12 +21,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import vectorwing.farmersdelight.common.block.entity.SyncedBlockEntity;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
 import vectorwing.farmersdelight.common.block.StoveBlock;
+import vectorwing.farmersdelight.refabricated.inventory.ItemStackHandler;
 
 public class NetherStoveBlockEntity extends SyncedBlockEntity {
     private static final VoxelShape GRILLING_AREA = Block.box(3.0F, 0.0F, 3.0F, 13.0F, 1.0F, 13.0F);
     private static final int INVENTORY_SLOT_COUNT = 6;
 
-    private final ItemStackHandlerContainer inventory;
+    private final ItemStackHandler inventory;
     private final int[] cookingTimes;
     private final int[] cookingTimesTotal;
 
@@ -168,7 +168,7 @@ public class NetherStoveBlockEntity extends SyncedBlockEntity {
         return this.quickCheck.getRecipeFor(new SingleRecipeInput(stack), this.level);
     }
 
-    public ItemStackHandlerContainer getInventory() {
+    public ItemStackHandler getInventory() {
         return this.inventory;
     }
 
@@ -199,8 +199,8 @@ public class NetherStoveBlockEntity extends SyncedBlockEntity {
         return writeItems(new CompoundTag(), registries);
     }
 
-    private ItemStackHandlerContainer createHandler() {
-        return new ItemStackHandlerContainer(INVENTORY_SLOT_COUNT)
+    private ItemStackHandler createHandler() {
+        return new ItemStackHandler(INVENTORY_SLOT_COUNT)
         {
             @Override
             public int getSlotLimit(int slot) {

@@ -1,2 +1,3 @@
-- Fixed crash with other mods adding signs.
-- Fixed crash when placing new cabinet blocks from this mod.
+- Updated for compatibility with Farmer's Delight Refabricated 3.0.0
+- Translated tags.
+- Fixed crash upon attempting to save NBT with the Pungent effect. - [#10](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/10)

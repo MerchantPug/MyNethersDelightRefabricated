@@ -1,7 +1,7 @@
 package com.soytutta.mynethersdelight.common.item;
 
 import com.soytutta.mynethersdelight.common.registry.MNDEffects;
-import io.github.fabricators_of_create.porting_lib.entity.EffectCures;
+import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -47,7 +47,7 @@ public class HotCreamItem extends DrinkableItem {
 
         while (iterator.hasNext()) {
             MobEffectInstance effectInstance = iterator.next();
-            if (effectInstance.getCures().contains(EffectCures.MILK)) {
+            if (effectInstance.getEffect().is(MNDTags.HOT_CREAM_IGNORED)) {
                 effectsToRemove.add(effectInstance);
             }
         }

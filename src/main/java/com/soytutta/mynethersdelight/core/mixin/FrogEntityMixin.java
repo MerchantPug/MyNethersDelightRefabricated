@@ -1,6 +1,7 @@
 package com.soytutta.mynethersdelight.core.mixin;
 
 import com.soytutta.mynethersdelight.common.entity.ia.EatMagmaCakeGoal;
+import com.soytutta.mynethersdelight.core.mixin.refabricated.MobAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.frog.Frog;

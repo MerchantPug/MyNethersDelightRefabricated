@@ -1,4 +1,4 @@
-package com.soytutta.mynethersdelight.core.mixin;
+package com.soytutta.mynethersdelight.core.mixin.refabricated;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.soytutta.mynethersdelight.common.registry.MNDBlockEntityTypes;

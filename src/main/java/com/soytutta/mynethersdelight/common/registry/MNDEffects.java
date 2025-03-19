@@ -5,15 +5,23 @@
 
 package com.soytutta.mynethersdelight.common.registry;
 
+import com.soytutta.mynethersdelight.MyNethersDelight;
 import com.soytutta.mynethersdelight.common.effect.GoodPungentEffect;
 import com.soytutta.mynethersdelight.common.effect.PungentEffect;
-import io.github.fabricators_of_create.porting_lib.util.DeferredRegister;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 
+import java.util.function.Supplier;
+
 public class MNDEffects {
-    public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, "mynethersdelight");
-    public static final Holder<MobEffect> GPUNGENT = EFFECTS.register("g_pungent", GoodPungentEffect::new);
-    public static final Holder<MobEffect> BPUNGENT = EFFECTS.register("b_pungent", PungentEffect::new);
+    public static final Holder<MobEffect> GPUNGENT = register("g_pungent", GoodPungentEffect::new);
+    public static final Holder<MobEffect> BPUNGENT = register("b_pungent", PungentEffect::new);
+
+    public static void register() {}
+
+    private static Holder<MobEffect> register(String path, Supplier<MobEffect> effect) {
+        return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, MyNethersDelight.res(path), effect.get());
+    }
 }

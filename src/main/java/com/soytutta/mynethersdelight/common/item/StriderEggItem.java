@@ -8,7 +8,7 @@ package com.soytutta.mynethersdelight.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.fabricators_of_create.porting_lib.entity.EffectCures;
+import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -32,7 +32,7 @@ public class StriderEggItem extends DrinkableItem {
 
         for (MobEffectInstance effectInstance : consumer.getActiveEffects()) {
             if ((effectInstance.getEffect().value()).getCategory().equals(MobEffectCategory.HARMFUL)
-                    && effectInstance.getCures().contains(EffectCures.MILK)) {
+                    && effectInstance.getEffect().is(MNDTags.STRIDER_EGG_IGNORED)) {
             harmfulEffects.add(effectInstance);
             }
         }

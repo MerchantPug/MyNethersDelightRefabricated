@@ -173,7 +173,7 @@ public class PowderyCannonBlock extends Block implements BonemealableBlock {
     }
 
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return !level.getBlockState(pos.below()).is(MNDTags.POWDERY_CANNON_PLANTABLE_ON);
+        return level.getBlockState(pos.below()).is(MNDTags.POWDERY_CANNON_PLANTABLE_ON);
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState offsetState, LevelAccessor level, BlockPos pos, BlockPos offsetPos) {

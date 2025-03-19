@@ -55,7 +55,7 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
             nearbyPos = var2.next();
             BlockState state = level.getBlockState(nearbyPos);
             if (state.getFluidState().is(FluidTags.LAVA)) {
-                int lightLevel = state.getLightEmission(level, nearbyPos);
+                int lightLevel = state.getLightEmission();
                 int distance = pos.distManhattan(nearbyPos);
                 if (distance <= lightLevel) {
                     return true;
@@ -63,7 +63,7 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
             }
             if (state.is(MNDTags.LETIOS_FLAMES)) {
                 if (!state.hasProperty(BlockStateProperties.LIT) || (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT))) {
-                    int lightLevel = state.getLightEmission(level, nearbyPos);
+                    int lightLevel = state.getLightEmission();
                     int distance = pos.distManhattan(nearbyPos);
                     if (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof WallTorchBlock) {
                         lightLevel = lightLevel / 2;

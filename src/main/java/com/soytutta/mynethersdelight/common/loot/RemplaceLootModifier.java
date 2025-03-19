@@ -1,12 +1,6 @@
 package com.soytutta.mynethersdelight.common.loot;
 
-import com.google.common.base.Suppliers;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
-import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -15,20 +9,13 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
+import vectorwing.farmersdelight.refabricated.LootModifier;
 
-import java.util.function.Supplier;
-
+@Deprecated
 public class RemplaceLootModifier extends LootModifier {
     private final Item replacedItem;
     private final Item newItem;
     private final EntityType<?> entity;
-
-    public static final Supplier<MapCodec<RemplaceLootModifier>> CODEC = Suppliers.memoize(() ->
-            RecordCodecBuilder.mapCodec(inst -> codecStart(inst)
-                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("replaces").forGetter(RemplaceLootModifier::getReplacedItem))
-                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(RemplaceLootModifier::getNewItem))
-                    .and(BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter(RemplaceLootModifier::getEntity))
-                    .apply(inst, RemplaceLootModifier::new)));
 
     public RemplaceLootModifier(LootItemCondition[] conditionsIn, Item replacedItem, Item newItem, EntityType<?> entity) {
         super(conditionsIn);
@@ -50,11 +37,6 @@ public class RemplaceLootModifier extends LootModifier {
             generatedLoot.add(new ItemStack(newItem, amountOfItems));
         }
         return generatedLoot;
-    }
-
-    @Override
-    public MapCodec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
     }
 
     public Item getReplacedItem() {

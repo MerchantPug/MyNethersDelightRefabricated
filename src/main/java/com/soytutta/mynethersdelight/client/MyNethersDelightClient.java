@@ -31,6 +31,7 @@ public class MyNethersDelightClient implements ClientModInitializer {
         instance.putBlock(MNDBlocks.POTTED_BULLET_PEPPER.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.POWDERY_CANE.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.POWDERY_CANNON.get(), RenderType.cutout());
+        instance.putBlock(MNDBlocks.POWDERY_CHUBBY_SAPLING.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.POWDERY_DOOR.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.POWDERY_TRAPDOOR.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.POWDERY_TORCH.get(), RenderType.cutout());

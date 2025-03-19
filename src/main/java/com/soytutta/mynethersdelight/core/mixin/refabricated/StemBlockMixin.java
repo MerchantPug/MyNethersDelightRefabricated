@@ -1,10 +1,9 @@
-package com.soytutta.mynethersdelight.core.mixin;
+package com.soytutta.mynethersdelight.core.mixin.refabricated;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilFarmlandBlock;
-import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.utility.MNDSoilUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;

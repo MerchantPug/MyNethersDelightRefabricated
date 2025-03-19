@@ -2,18 +2,16 @@ package com.soytutta.mynethersdelight.common.registry;
 
 import com.soytutta.mynethersdelight.MyNethersDelight;
 import com.soytutta.mynethersdelight.common.utility.MNDTextUtils;
-import io.github.fabricators_of_create.porting_lib.util.DeferredHolder;
-import io.github.fabricators_of_create.porting_lib.util.DeferredRegister;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.*;
 import net.minecraft.world.item.*;
 import vectorwing.farmersdelight.common.registry.ModItems;
 
-public class MNDCreativeTab {
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MyNethersDelight.MODID);
+import java.util.function.Supplier;
 
-    public static final DeferredHolder<CreativeModeTab,
-                CreativeModeTab> MY_NETHERS_DELIGHT_TAB = TABS.register("main",
+public class MNDCreativeTab {
+    public static final Supplier<CreativeModeTab> MY_NETHERS_DELIGHT_TAB = register("main",
             () -> FabricItemGroup.builder()
                 .title(MNDTextUtils.getTranslation("itemGroup.main"))
                 .icon(MNDItems.NETHER_STOVE.get()::getDefaultInstance)
@@ -122,4 +120,12 @@ public class MNDCreativeTab {
                 }
         ).build()
     );
+
+    public static void register() {}
+
+    private static Supplier<CreativeModeTab> register(String path, Supplier<CreativeModeTab> supp) {
+        CreativeModeTab value = supp.get();
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MyNethersDelight.res(path), value);
+        return () -> value;
+    }
 }

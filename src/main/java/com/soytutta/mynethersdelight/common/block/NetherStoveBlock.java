@@ -12,7 +12,6 @@ import com.soytutta.mynethersdelight.common.block.entity.NetherStoveBlockEntity;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.registry.MNDBlockEntityTypes;
-import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +22,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -80,7 +80,7 @@ public class NetherStoveBlock extends BaseEntityBlock {
         Item heldItem = heldStack.getItem();
 
         if (state.getValue(LIT)) {
-            if (heldStack.canPerformAction(ItemAbilities.SHOVEL_DIG)) {
+            if (heldStack.is(ItemTags.SHOVELS)) {
                 extinguish(state, level, pos);
                 heldStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 return ItemInteractionResult.SUCCESS;

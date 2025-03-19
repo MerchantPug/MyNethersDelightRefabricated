@@ -93,15 +93,4 @@ public class StriderRockEntity extends ThrowableItemProjectile {
     protected Item getDefaultItem() {
         return MNDItems.STRIDER_ROCK.get();
     }
-
-    // Thanks Porting Lib...
-    @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        return new CompoundTag();
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
-
-    }
 }

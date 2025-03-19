@@ -4,6 +4,8 @@ import com.soytutta.mynethersdelight.common.MNDCommonSetup;
 import com.soytutta.mynethersdelight.common.events.CommonEvent;
 import com.soytutta.mynethersdelight.common.item.HotCreamConeItem;
 import com.soytutta.mynethersdelight.common.registry.*;
+import com.soytutta.mynethersdelight.refabricated.MNDRefabricatedLootConditions;
+import com.soytutta.mynethersdelight.refabricated.MNDRefabricatedLootModificationEvents;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -18,15 +20,14 @@ public class MyNethersDelight implements ModInitializer
     @Override
     public void onInitialize() {
         // Refabricated: There's been some minor rearrangements.
-        MNDEffects.EFFECTS.register();
-        MNDBlocks.BLOCKS.register();
-        MNDItems.ITEMS.register();
-        MNDBlockEntityTypes.TILES.register();
-        MNDEntityTypes.ENTITIES.register();
-        MNDCreativeTab.TABS.register();
-        MNDBiomeFeatures.FEATURES.register();
-        MNDLootModifiers.LOOT_MODIFIERS.register();
-        MNDEnchantmentComponents.ENCHANTMENT_EFFECT_COMPONENTS.register();
+        MNDEffects.register();
+        MNDBlocks.register();
+        MNDItems.register();
+        MNDBlockEntityTypes.register();
+        MNDEntityTypes.register();
+        MNDCreativeTab.register();
+        MNDBiomeFeatures.register();
+        MNDEnchantmentComponents.register();
 
         MNDCommonSetup.init();
 
@@ -34,14 +35,9 @@ public class MyNethersDelight implements ModInitializer
         CommonEvent.init();
         HotCreamConeItem.StriderFoodEvent.init();
         MNDBiomeModifiers.init();
-        addCabinets();
-    }
-
-    private static void addCabinets() {;
-        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.BLACKSTONE_BRICKS_CABINET.get());
-        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.NETHER_BRICKS_CABINET.get());
-        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.POWDERY_CABINET.get());
-        ModBlockEntityTypes.CABINET.get().addSupportedBlock(MNDBlocks.RED_NETHER_BRICKS_CABINET.get());
+        MNDRefabricatedLootModificationEvents.init();
+        MNDBlockEntityTypes.addCabinetsBlockEntities();
+        MNDRefabricatedLootConditions.registerLootConditions();
     }
 
     public static ResourceLocation res(String path) {

@@ -14,7 +14,6 @@
     }
   ],
   "tool": {
-    "fabric:type": "farmersdelight:item_ability",
-    "action": "axe_wax_off"
+    "tag": "minecraft:axes"
   }
 }

@@ -3,19 +3,21 @@
   "package": "com.soytutta.mynethersdelight.core.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "BushBlockMixin",
-    "CactusBlockMixin",
-    "CropBlockMixin",
     "FrogEntityMixin",
-    "HangingSignBlockEntityMixin",
     "KeepResurgentSoilGiantTreeMixin",
     "KeepResurgentSoilTreeMixin",
-    "MobAccessor",
-    "MushroomBlockMixin",
-    "MushroomColonyBlockMixin",
-    "PitcherCropBlockMixin",
-    "StemBlockMixin",
-    "SugarCaneBlockMixin"
+    "refabricated.BushBlockMixin",
+    "refabricated.CactusBlockMixin",
+    "refabricated.CropBlockMixin",
+    "refabricated.HangingSignBlockEntityMixin",
+    "refabricated.LootItemAccessor",
+    "refabricated.MobAccessor",
+    "refabricated.MushroomBlockMixin",
+    "refabricated.MushroomColonyBlockMixin",
+    "refabricated.PitcherCropBlockMixin",
+    "refabricated.StemBlockMixin",
+    "refabricated.SugarCaneBlockMixin",
+    "refabricated.LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

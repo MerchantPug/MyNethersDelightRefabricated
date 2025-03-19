@@ -1,28 +1,25 @@
-package com.soytutta.mynethersdelight.core.mixin;
+package com.soytutta.mynethersdelight.core.mixin.refabricated;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.soytutta.mynethersdelight.common.block.LetiosCompostBlock;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilBlock;
 import com.soytutta.mynethersdelight.common.block.ResurgentSoilFarmlandBlock;
-import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import com.soytutta.mynethersdelight.common.utility.MNDSoilUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
 
 /**
  * Fabric should <b>really</b> have an event for this...
  * This is the bare minimum to keep parity with Forge.
  */
-@Mixin(BushBlock.class)
-public class SugarCaneBlockMixin {
-    @ModifyReturnValue(method = "canSurvive", at = @At("RETURN"))
-    private boolean mynethersdelightrefabricated$allowPlantsOnSugarCane(boolean original, BlockState state, LevelReader level, BlockPos pos) {
+@Mixin(value = MushroomColonyBlock.class, remap = false)
+public class MushroomColonyBlockMixin {
+    @ModifyExpressionValue(method = "canSurvive", at = @At(value = "INVOKE", target = "Lvectorwing/farmersdelight/common/block/MushroomColonyBlock;mayPlaceOn(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"), remap = true)
+    private boolean mynethersdelightrefabricated$allowPlantsOnMushroomColony(boolean original, BlockState state, LevelReader level, BlockPos pos) {
         if (state.getBlock() != (Object)this)
             return original;
 

@@ -1,4 +1,4 @@
-package com.soytutta.mynethersdelight.core.mixin;
+package com.soytutta.mynethersdelight.core.mixin.refabricated;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;

@@ -7,7 +7,7 @@ package com.soytutta.mynethersdelight.common.block;
 import com.soytutta.mynethersdelight.common.registry.MNDBlocks;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
-import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -179,7 +180,7 @@ public class TrophyBlock extends Block implements SimpleWaterloggedBlock {
             processTrophyInteraction(level, pos, player, hand, MNDBlocks.WAXED_HOGLIN_TROPHY.get(), SoundEvents.HONEYCOMB_WAX_ON, ParticleTypes.WAX_ON, secondParticle, secondSoundEvent, useSecondEffects);
             return ItemInteractionResult.SUCCESS;
         }
-        else if (block == MNDBlocks.WAXED_HOGLIN_TROPHY.get() && heldItem.canPerformAction(ItemAbilities.AXE_WAX_OFF)) {
+        else if (block == MNDBlocks.WAXED_HOGLIN_TROPHY.get() && heldItem.is(ItemTags.AXES)) {
             processTrophyInteraction(level, pos, player, hand, MNDBlocks.HOGLIN_TROPHY.get(), SoundEvents.HONEYCOMB_WAX_ON, ParticleTypes.WAX_OFF, secondParticle, secondSoundEvent, useSecondEffects);
             return ItemInteractionResult.SUCCESS;
         }

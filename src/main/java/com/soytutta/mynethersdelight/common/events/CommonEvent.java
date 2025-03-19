@@ -3,7 +3,6 @@ package com.soytutta.mynethersdelight.common.events;
 import com.soytutta.mynethersdelight.common.enchantment.PoachingData;
 import com.soytutta.mynethersdelight.common.registry.MNDEnchantmentComponents;
 import com.soytutta.mynethersdelight.common.tag.MNDTags;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDropsEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +40,6 @@ public class CommonEvent {
 
     public static void init() {
         ServerLivingEntityEvents.AFTER_DEATH.register(CommonEvent::livingDie);
-        LivingDropsEvent.EVENT.register(CommonEvent::onMobDrop);
     }
 
     public static void livingDie(LivingEntity entity, DamageSource damageSource){
@@ -272,10 +270,9 @@ public class CommonEvent {
         }
     }
 
-    public static void onMobDrop(LivingDropsEvent event) {
-        if (event.getEntity() instanceof Mob mob && mob.getTags().contains("prevent_drops")) {
-            event.getDrops().clear();
-        }
+    // I'm not happy about the use of command tags either, but I'm just a porter...
+    public static boolean onMobDrop(Entity entity) {
+        return entity instanceof Mob mob && mob.getTags().contains("prevent_drops");
     }
 
     private static void transferAttributes(Horse horse, ZombieHorse zombieHorse) {

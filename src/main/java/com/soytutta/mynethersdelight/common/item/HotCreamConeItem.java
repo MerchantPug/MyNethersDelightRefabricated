@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.soytutta.mynethersdelight.common.registry.MNDEffects;
 import com.soytutta.mynethersdelight.common.registry.MNDItems;
-import io.github.fabricators_of_create.porting_lib.entity.EffectCures;
+import com.soytutta.mynethersdelight.common.tag.MNDTags;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -58,7 +58,7 @@ public class HotCreamConeItem extends ConsumableItem {
 
         while (iterator.hasNext() && !removedEffect) {
             MobEffectInstance effectInstance = iterator.next();
-            if (effectInstance.getCures().contains(EffectCures.MILK)) {
+            if (effectInstance.getEffect().is(MNDTags.HOT_CREAM_IGNORED)) {
                 int remainingDuration = effectInstance.getDuration();
                 int fireResistanceDuration = (remainingDuration / 5);
                 int pungentDuration = (fireResistanceDuration / 2);

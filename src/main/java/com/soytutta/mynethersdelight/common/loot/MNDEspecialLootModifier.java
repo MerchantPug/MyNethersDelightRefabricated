@@ -4,8 +4,6 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.soytutta.mynethersdelight.common.block.MagmaCakeBlock;
-import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
-import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -15,16 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import vectorwing.farmersdelight.refabricated.LootModifier;
 
-import java.util.function.Supplier;
-
+@Deprecated
 public class MNDEspecialLootModifier extends LootModifier
 {
-    public static final Supplier<MapCodec<MNDEspecialLootModifier>> CODEC = Suppliers.memoize(() ->
-            RecordCodecBuilder.mapCodec(inst -> codecStart(inst)
-                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("drop").forGetter((m) -> m.especialDrop))
-                    .apply(inst, MNDEspecialLootModifier::new)));
-
     private final Item especialDrop;
 
     protected MNDEspecialLootModifier(LootItemCondition[] conditionsIn, Item especialDropIn) {
@@ -47,9 +40,4 @@ public class MNDEspecialLootModifier extends LootModifier
         return generatedLoot;
     }
 
-
-    @Override
-    public MapCodec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
-    }
 }

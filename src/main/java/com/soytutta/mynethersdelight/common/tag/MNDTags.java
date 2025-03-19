@@ -4,6 +4,7 @@ import com.soytutta.mynethersdelight.MyNethersDelight;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -49,6 +50,9 @@ public class MNDTags {
     public static final TagKey<Biome> POWDERY_CANE_WHITELIST = modBiomeTag("powdery_cane_whitelist");
     public static final TagKey<Biome> POWDERY_CANE_BLACKLIST = modBiomeTag("powdery_cane_blacklist");
 
+    public static final TagKey<MobEffect> HOT_CREAM_IGNORED = modEffectTag("ignored/hot_cream");
+    public static final TagKey<MobEffect> STRIDER_EGG_IGNORED = modEffectTag("ignored/strider_egg");
+
     private static TagKey<Item> modItemTag(String path) {
         return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("mynethersdelight", path));
     }
@@ -60,6 +64,9 @@ public class MNDTags {
     }
     private static TagKey<Biome> modBiomeTag(String path) {
         return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mynethersdelight", path));
+    }
+    private static TagKey<MobEffect> modEffectTag(String path) {
+        return TagKey.create(Registries.MOB_EFFECT, ResourceLocation.fromNamespaceAndPath("mynethersdelight", path));
     }
 
 }
