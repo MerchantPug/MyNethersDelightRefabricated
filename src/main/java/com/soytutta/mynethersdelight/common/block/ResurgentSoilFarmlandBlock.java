@@ -45,7 +45,7 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
     }
 
     private static boolean hasFireOrLava(LevelReader level, BlockPos pos) {
-        Iterator<BlockPos> var2 = BlockPos.betweenClosed(pos.offset(-8, -4, -8), pos.offset(8, 4, 8)).iterator();
+        Iterator<BlockPos> var2 = BlockPos.betweenClosed(pos.offset(-7, -7, -7), pos.offset(7, 7, 7)).iterator();
 
         BlockPos nearbyPos;
         do {
@@ -55,11 +55,26 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
             nearbyPos = var2.next();
             BlockState state = level.getBlockState(nearbyPos);
             if (state.getFluidState().is(FluidTags.LAVA)) {
-                return true;
+                int lightLevel = state.getLightEmission(level, nearbyPos);
+                int distance = pos.distManhattan(nearbyPos);
+                if (distance <= lightLevel) {
+                    return true;
+                }
             }
             if (state.is(MNDTags.LETIOS_FLAMES)) {
                 if (!state.hasProperty(BlockStateProperties.LIT) || (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT))) {
-                    return true;
+                    int lightLevel = state.getLightEmission(level, nearbyPos);
+                    int distance = pos.distManhattan(nearbyPos);
+                    if (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof WallTorchBlock) {
+                        lightLevel = lightLevel / 2;
+                    } else if (state.getBlock() instanceof LanternBlock) {
+                        lightLevel = (lightLevel / 2) + 2;
+                    } else if (state.getBlock() instanceof MagmaCakeBlock || state.getBlock() instanceof  MagmaBlock) {
+                        lightLevel = lightLevel + 3;
+                    }
+                    if (distance <= lightLevel) {
+                        return true;
+                    }
                 }
             }
         } while(true);
@@ -111,7 +126,7 @@ public class ResurgentSoilFarmlandBlock extends FarmBlock {
         BlockState belowState = level.getBlockState(belowPos);
         Block belowBlock = belowState.getBlock();
 
-        if (!hasFireOrLava(level, pos) && !level.isRainingAt(pos.above())) {
+        if (!hasFireOrLava(level, pos) || level.isRainingAt(pos.above())) {
             if (moisture > 0) {
                 level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
             }

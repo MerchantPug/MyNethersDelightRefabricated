@@ -211,7 +211,7 @@ public class MNDBlocks {
                     , MNDItems.GHASTA_WITH_CREAM, true)
     );
     public static final Supplier<Block> MAGMA_CAKE_BLOCK = BLOCKS.register("magma_cake_block", () ->
-            new MagmaCakeBlock (Block.Properties.ofFullCopy(Blocks.CAKE).lightLevel((light) ->  9)
+            new MagmaCakeBlock (Block.Properties.ofFullCopy(Blocks.CAKE).lightLevel((light) ->  3)
                     , MNDItems.MAGMA_CAKE_SLICE)
     );
     public static final Supplier<Block> STUFFED_HOGLIN = BLOCKS.register("stuffed_hoglin", () ->
