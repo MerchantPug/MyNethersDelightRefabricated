@@ -1,5 +1,5 @@
 {
-  "block.mynethersdelight.blackstone_bricks_cabinet": "Blackstone Brick Cabinet",
+  "block.mynethersdelight.blackstone_bricks_cabinet": "Polished Blackstone Brick Cabinet",
   "block.mynethersdelight.bullet_pepper": "Bullet Pepper",
   "block.mynethersdelight.bullet_pepper_crate": "Bullet Pepper Crate",
   "block.mynethersdelight.cold_striderloaf_block": "Cold Striderloaf",
@@ -43,9 +43,9 @@
   "block.mynethersdelight.waxed_hoglin_trophy": "Waxed Hoglin Trophy",
   "block.mynethersdelight.zoglin_trophy": "Zoglin Trophy",
   "effect.mynethersdelight.b_pungent": "Pungent",
-  "effect.mynethersdelight.b_pungent.desc": "Increases heat sensitivity and prevents burns when leaving the heat zone",
+  "effect.mynethersdelight.b_pungent.description": "Increases heat sensitivity and prevents burns when leaving the heat zone",
   "effect.mynethersdelight.g_pungent": "Pungent",
-  "effect.mynethersdelight.g_pungent.desc": "Regenerate with heat",
+  "effect.mynethersdelight.g_pungent.description": "Regenerate with heat",
   "enchantment.mynethersdelight.poaching": "Poaching",
   "enchantment.mynethersdelight.poaching.desc": "Responsible hunting can provide you with extra ingredients!!!\nBut be careful about choosing your target...",
   "farmersdelight.tooltip.hot_cream": "Burning Effects",
