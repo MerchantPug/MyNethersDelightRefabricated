@@ -1,1 +1,4 @@
-- Fix Magma Cake Block not dropping anything upon breaking with a knife.
+- Fixed Magma Cake Block not dropping anything upon breaking with a knife.
+- Updated Polished Blackstone Brick Cabinet's name for parity with vanilla's full name. [#16](https://github.com/MerchantPug/MyNethersDelightRefabricated/pull/16)
+- Fixed JEED translation keys. [#16](https://github.com/MerchantPug/MyNethersDelightRefabricated/pull/16)
+- Updated `ru_ru` translation JSON. [#16](https://github.com/MerchantPug/MyNethersDelightRefabricated/pull/16)
