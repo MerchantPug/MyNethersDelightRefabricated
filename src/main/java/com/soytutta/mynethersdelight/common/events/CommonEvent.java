@@ -271,7 +271,7 @@ public class CommonEvent {
     }
 
     // I'm not happy about the use of command tags either, but I'm just a porter...
-    public static boolean onMobDrop(Entity entity) {
+    public static boolean preventMobDrops(Entity entity) {
         return entity instanceof Mob mob && mob.getTags().contains("prevent_drops");
     }
 

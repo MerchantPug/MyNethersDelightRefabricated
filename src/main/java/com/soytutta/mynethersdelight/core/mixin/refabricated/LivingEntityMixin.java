@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LivingEntityMixin {
     @Inject(method = "dropAllDeathLoot", at = @At("HEAD"), cancellable = true)
     private void mynethersdelightrefabricated$dropCapturedDrops(ServerLevel level, DamageSource damageSource, CallbackInfo ci) {
-        if (!CommonEvent.onMobDrop((LivingEntity)(Object)this))
+        if (CommonEvent.preventMobDrops((LivingEntity)(Object)this))
             ci.cancel();
     }
 }
