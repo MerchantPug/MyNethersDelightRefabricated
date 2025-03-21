@@ -1,5 +1,1 @@
-- Updated for compatibility with Farmer's Delight Refabricated 3.0.0
-- Translated item tags in en_us.json.
-- Fixed Powdery Cannon Sapling block not being applied to the correct render layer. - [#9](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/10)
-- Fixed Powdery Cannon breaking upon growing. - [#9](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/9)
-- Fixed crash upon attempting to save NBT with the Pungent effect. - [#10](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/10)
+- Fixed Poaching making entities not drop any items logic being inverted. [#17](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/10)
