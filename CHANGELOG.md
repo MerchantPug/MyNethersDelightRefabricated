@@ -1,1 +1,1 @@
-- Fixed Poaching making entities not drop any items logic being inverted. [#17](https://github.com/MerchantPug/MyNethersDelightRefabricated/issues/10)
+- Fix Magma Cake Block not dropping anything upon breaking with a knife.

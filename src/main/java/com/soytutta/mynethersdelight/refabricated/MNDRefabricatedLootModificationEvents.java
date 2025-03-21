@@ -181,7 +181,7 @@ public class MNDRefabricatedLootModificationEvents {
         if (key == BLOCKS_MAGMA_CAKE_BLOCK) {
             for (int state = 0; state < 7; ++state) {
                 for (int i = 0; i < 2; ++i) {
-                    float amount = (i * 7) - state;
+                    float amount = ((i + 1) * 7) - state;
                     tableBuilder.withPool(LootPool.lootPool().add(LootItem.lootTableItem(MNDItems.MAGMA_CAKE_SLICE.get())
                                     .apply(SetItemCountFunction.setCount(ConstantValue.exactly(amount))))
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(MNDBlocks.MAGMA_CAKE_BLOCK.get())
