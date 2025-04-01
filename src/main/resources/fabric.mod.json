@@ -6,10 +6,10 @@
   "description": "A nether expansion for the Farmer's Delight mod!",
   "authors": [
     "SoyTutta",
-    "MerchantPug"
+    "MerchantCalico"
   ],
   "contributors": [
-    "MerchantPug",
+    "MerchantCalico",
     "Mpustovoi",
     "Unroman",
     "ChuijkYahus",
@@ -22,7 +22,7 @@
   ],
   "contact": {
     "homepage": "https://modrinth.com/project/my-nethers-delight-refabricated/",
-    "sources": "https://github.com/MerchantPug/MyNethersDelightRefabricated"
+    "sources": "https://github.com/MerchantCalico/MyNethersDelightRefabricated"
   },
   "license": "All Rights Reserved",
   "icon": "icon.png",
