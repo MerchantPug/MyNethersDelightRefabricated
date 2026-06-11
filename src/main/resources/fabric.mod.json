@@ -6,9 +6,11 @@
   "description": "A nether expansion for the Farmer's Delight mod!",
   "authors": [
     "SoyTutta",
+    "rotgruengelb",
     "MerchantCalico"
   ],
   "contributors": [
+    "rotgruengelb",
     "MerchantCalico",
     "Mpustovoi",
     "Unroman",
@@ -51,6 +53,6 @@
   "depends": {
     "fabric": "*",
     "minecraft": "1.21.1",
-    "farmersdelight": ">=1.21.1-3.0.0"
+    "farmersdelight": ">=1.21.1-3.3.3"
   }
 }

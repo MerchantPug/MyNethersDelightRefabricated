@@ -166,7 +166,7 @@ public class PowderyCaneBlock extends BushBlock implements BonemealableBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(CommonTags.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -210,7 +210,7 @@ public class PowderyCaneBlock extends BushBlock implements BonemealableBlock {
     protected ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(hand);
 
-        if (heldItem.is(CommonTags.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+        if (heldItem.is(CommonTags.Items.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
              int age = state.getValue(AGE);
              if (state.getValue(LIT)) {
                  if (age > 0) {

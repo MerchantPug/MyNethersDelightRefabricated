@@ -172,7 +172,7 @@ public class PowderyFlowerBlock extends Block implements BonemealableBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(CommonTags.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -218,7 +218,7 @@ public class PowderyFlowerBlock extends Block implements BonemealableBlock {
 
         if ( age == 2 && state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
-            if (heldItem.is(CommonTags.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+            if (heldItem.is(CommonTags.Items.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 heldItem.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
                 level.destroyBlock(pos, true);

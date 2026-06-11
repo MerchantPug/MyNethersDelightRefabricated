@@ -191,7 +191,7 @@ public class TrophyBlock extends Block implements SimpleWaterloggedBlock {
             processTrophyInteraction(level, pos, player, hand, MNDBlocks.HOGLIN_TROPHY.get(), SoundEvents.ZOMBIE_VILLAGER_CURE, ParticleTypes.CLOUD, secondParticle, secondSoundEvent, useSecondEffects);
             return ItemInteractionResult.SUCCESS;
         }
-        else if (block == MNDBlocks.HOGLIN_TROPHY.get() && heldItem.is(CommonTags.TOOLS_KNIFE)) {
+        else if (block == MNDBlocks.HOGLIN_TROPHY.get() && heldItem.is(CommonTags.Items.TOOLS_KNIFE)) {
             secondParticle = ParticleTypes.CLOUD;
             secondSoundEvent = SoundEvents.HOGLIN_HURT;
             useSecondEffects = true;
@@ -200,7 +200,7 @@ public class TrophyBlock extends Block implements SimpleWaterloggedBlock {
             popResource(level, pos, new ItemStack(Items.LEATHER, j));
             return ItemInteractionResult.SUCCESS;
         }
-        else if (block == MNDBlocks.ZOGLIN_TROPHY.get() && heldItem.is(CommonTags.TOOLS_KNIFE)) {
+        else if (block == MNDBlocks.ZOGLIN_TROPHY.get() && heldItem.is(CommonTags.Items.TOOLS_KNIFE)) {
             secondParticle = ParticleTypes.CLOUD;
             secondSoundEvent = SoundEvents.ZOGLIN_HURT;
             useSecondEffects = true;

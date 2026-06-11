@@ -322,7 +322,7 @@ public class PowderyCannonBlock extends Block implements BonemealableBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(CommonTags.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIFE) || !heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 explodeAndReset(level, pos, state);
             }
         }
@@ -336,7 +336,7 @@ public class PowderyCannonBlock extends Block implements BonemealableBlock {
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
 
-            if (heldItem.is(CommonTags.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
+            if (heldItem.is(CommonTags.Items.TOOLS_KNIFE) || heldItem.is(ConventionalItemTags.SHEAR_TOOLS)) {
                 heldItem.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
                 int j = 3 + level.random.nextInt(6);
                 popResource(level, pos, new ItemStack(MNDItems.BULLET_PEPPER.get(), j));

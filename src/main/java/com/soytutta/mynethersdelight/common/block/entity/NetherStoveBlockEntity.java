@@ -76,7 +76,7 @@ public class NetherStoveBlockEntity extends SyncedBlockEntity {
         boolean isStoveLit = state.getValue(StoveBlock.LIT);
 
         if (stove.isStoveBlockedAbove()) {
-            if (!ItemUtils.isInventoryEmpty(stove.inventory)) {
+            if (ItemUtils.doesInventoryHaveItems(stove.inventory)) {
                 ItemUtils.dropItems(level, pos, stove.inventory);
                 stove.inventoryChanged();
             }
