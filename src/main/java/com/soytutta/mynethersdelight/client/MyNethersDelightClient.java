@@ -38,5 +38,6 @@ public class MyNethersDelightClient implements ClientModInitializer {
         instance.putBlock(MNDBlocks.WARPED_FUNGUS_COLONY.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.WALL_POWDERY_TORCH.get(), RenderType.cutout());
         instance.putBlock(MNDBlocks.ZOGLIN_TROPHY.get(), RenderType.cutout());
+        instance.putBlock(MNDBlocks.WAXED_HOGLIN_TROPHY.get(), RenderType.cutout());
     }
 }
