@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.16-SNAPSHOT'
     id 'maven-publish'
     id "me.modmuss50.mod-publish-plugin" version "0.6.2"
 }
@@ -12,11 +12,7 @@ base {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/mynethersdelight.accesswidener")
-
-    mixin {
-        defaultRefmapName = "mynethersdelight.refmap.json"
-    }
+    accessWidenerPath = file("src/main/resources/mynethersdelight.classtweaker")
 }
 
 sourceSets.main.resources {
@@ -53,6 +49,7 @@ repositories {
     maven { url = "https://maven.fabricmc.net/" } // FAPI, Loader
     maven { url = "https://mvn.devos.one/snapshots/" } // Registrate, Porting Lib, Forge Tags, Milk Lib
     maven { url = "https://mvn.devos.one/releases/" }
+    maven { url = "https://maven.cassian.cc" }
     maven { // for Porting Lib: Fabric ASM
         url = "https://jitpack.io/"
     }
@@ -186,7 +183,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifactId "mynethersdelight"
             version project.version
             from components.java
         }
