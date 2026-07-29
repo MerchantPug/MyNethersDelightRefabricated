@@ -7,6 +7,7 @@
     "BushBlockMixin",
     "CactusBlockMixin",
     "CropBlockMixin",
+    "EnchantmentCategoryMixin",
     "FireworkRocketRecipeMixin",
     "FrogEntityMixin",
     "HangingSignBlockEntityMixin",

@@ -36,7 +36,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
+import vectorwing.farmersdelight.common.tag.CommonTags;
+import vectorwing.farmersdelight.common.tag.CommonTags.Items;
 
 import java.util.Random;
 
@@ -163,7 +164,7 @@ public class PowderyCaneBlock extends BushBlock implements BonemealableBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -207,7 +208,7 @@ public class PowderyCaneBlock extends BushBlock implements BonemealableBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
         ItemStack heldItem = player.getItemInHand(hand);
 
-         if (heldItem.is(ForgeTags.TOOLS_KNIVES) || heldItem.is(ConventionalItemTags.SHEARS)) {
+         if (heldItem.is(CommonTags.Items.TOOLS_KNIVES) || heldItem.is(ConventionalItemTags.SHEARS)) {
              int age = state.getValue(AGE);
              if (state.getValue(LIT)) {
                  if (age > 0) {

@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
+import vectorwing.farmersdelight.common.tag.CommonTags;
 
 import java.util.Random;
 
@@ -153,7 +153,7 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 int age = state.hasProperty(AGE) ? state.getValue(AGE) : 0;
                 explodeAndReset(level, pos, state, age);
             }
@@ -198,7 +198,7 @@ public class PowderyFlowerBlock extends BambooSaplingBlock {
 
         if ( age == 2 && state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
-            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (heldItem.is(CommonTags.Items.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
                 heldItem.hurtAndBreak(1, player, (action) -> { action.broadcastBreakEvent(hand); });
                 level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
                 level.destroyBlock(pos, true);

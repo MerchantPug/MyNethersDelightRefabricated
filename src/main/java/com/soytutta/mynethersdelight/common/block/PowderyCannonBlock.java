@@ -31,7 +31,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
+import vectorwing.farmersdelight.common.tag.CommonTags;
 
 public class PowderyCannonBlock extends BambooStalkBlock {
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
@@ -181,7 +181,7 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         }
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!heldItem.is(ForgeTags.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (!heldItem.is(CommonTags.Items.TOOLS_KNIVES) || !heldItem.is(ConventionalItemTags.SHEARS)) {
                 explodeAndDestroy(level, pos, state);
             }
         }
@@ -239,7 +239,7 @@ public class PowderyCannonBlock extends BambooStalkBlock {
         if (state.getValue(LIT)) {
             ItemStack heldItem = player.getItemInHand(hand);
 
-            if (heldItem.is(ForgeTags.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
+            if (heldItem.is(CommonTags.Items.TOOLS_KNIVES) ||heldItem.is(ConventionalItemTags.SHEARS)) {
                 heldItem.hurtAndBreak(1, player, (action) -> { action.broadcastBreakEvent(hand); });
                 int j = 3 + level.random.nextInt(6);
                 popResource(level, pos, new ItemStack(MNDItems.BULLET_PEPPER.get(), j));

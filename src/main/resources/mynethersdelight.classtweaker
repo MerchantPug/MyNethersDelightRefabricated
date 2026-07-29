@@ -1,0 +1,4 @@
+classTweaker v2 named
+accessible method net/minecraft/client/renderer/Sheets createSignMaterial (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/client/resources/model/Material;
+accessible method net/minecraft/client/renderer/Sheets createHangingSignMaterial (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/client/resources/model/Material;
+extend-enum net/minecraft/world/item/enchantment/EnchantmentCategory MY_NETHERS_DELIGHT_HUNTING_WEAPON
